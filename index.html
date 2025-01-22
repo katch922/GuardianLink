@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>GuardianLink - Bridge the Gap</title>
+    <meta name="author" content="R.K.">
+    <meta charset="utf-8">
+    <!-- make mobile friendly -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- stylesheet -->
+    <link rel="stylesheet" href="/GuardianLink/styles/style.css">
+  </head>
+
+<body class="body">
+
+  <!-- Navigation Bars -->
+  <!-- Login Bar -->
+  <nav class="login-bar">
+    <ul>
+      <li><a href='/GuardianLink/pages/php/signin.php' transition='Sign In'>Sign In</a></li>
+      <li><a href='/GuardianLink/pages/php/signout.php' transition='Sign Out'>Sign Out</a></li>
+      <li><a href='/GuardianLink/pages/php/register.php' transition='Register'>Register</a></li>
+    </ul>
+  </nav>
+  <!-- Nav Bar -->
+  <nav class="nav-bar">
+    <ul>
+      <li><a href='/GuardianLink/index.html' transition='Home'>Home</a></li>
+      <li><a href='/GuardianLink/pages/html/about.html' transition='About'>About</a></li>
+      <li><a href='/GuardianLink/pages/php/profile.php' transition='Profile'>Profile</a></li>
+      <li><a href='/GuardianLink/pages/php/edit_user.php' transition='Admin'>Admin</a></li>
+      <li><a href='/GuardianLink/pages/php/contact.php' transition='Contact'>Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Page container -->
+  <h1 class="title">Welcome to Guardian Link</h1>
+  <br>
+  <div class="container">
+    <!-- Home Page -->
+    <div class="row">
+      <div class="col-small">
+        <img src="/GuardianLink/images/guardian-link.jpg" alt="GuardianLink Logo">
+      </div>
+      <div class="col-large">
+        <h2 class="sub-title">Experience the Impact</h2>
+        <p class="para">
+          At Guardian Link, we connect volunteers with opportunities that truly make a difference.
+          Our free platform is a gateway to impactul volunteering that help non-profits grow stronger.
+          Whether you're an organization seeking dedicated volunteers or someone ready to give back,
+          we're here to support you. Start your journey with us today.
+        </p>
+      </div>
+    </div>
+    <br>
+
+    <!-- Volunteer Registration Speech -->
+    <div class="row">
+      <div class="col-large">
+        <h2 class="sub-title">For Volunteers</h2>
+        <p class="para">
+          Find your perfect volunteering match. Search for opportunities based on interest, skills, and
+          more. When you're ready to start applying simply register for a volunteer account.
+        </p>
+      </div>
+      <div class="col-small">
+        <button type="button" class="button"
+          onclick="window.location.href='/GuardianLink/pages/php/register.php'">Register
+        </button>
+      </div>
+    </div>
+    <br>
+
+    <!-- Organization registration speech -->
+    <div class="row">
+      <div class="col-large">
+        <h2 class="sub-title">For Organizations</h2>
+        <p class="para">
+          Post your volunteer positions and connect with dedicated individuals ready to help your
+          organization thrive. Join GuardianLink today and recruit volunteers that match your unique
+          needs.
+        </p>
+      </div>
+      <div class="col-small">
+        <button type="button" class="button" 
+          onclick="window.location.href='/GuardianLink/pages/php/register.php'">Register
+        </button>
+      </div>
+    </div>
+    <br>
+
+    <!-- About our program link -->
+    <div class="row">
+      <div class="col-small">
+        <button type="button" class="button" 
+          onclick="window.location.href='/GuardianLink/pages/html/about.html'">About
+        </button>
+      </div>
+      <div class="col-large">
+        <h2 class="sub-title">Find Out More</h2>
+        <p class="para">
+          For more information about GuardianLink check out our "About" page.
+        </p>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+<!-- Footer -->
+<footer class="footer">
+  Copyright &copy 2025 GuardianLink. Developed by R.K.
+</footer>
+</html>
