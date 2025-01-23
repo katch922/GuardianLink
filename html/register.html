@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Register</title>
+    <meta name="author" content="R.K.">
+    <meta charset="utf-8">
+    <!-- make mobile friendly -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../styles/register.css">
+  </head>
+
+<body class="body">
+
+  <!-- Navigation Bars -->
+  <!-- Login Bar -->
+  <nav class="logbar">
+    <ul>
+      <li><a href='html/signin.html' transition='Sign In'>Sign In</a></li>
+      <li><a href='php/signout.php' transition='Sign Out'>Sign Out</a></li>
+      <li><a href='register.html' transition='Register'>Register</a></li>
+    </ul>
+  </nav>
+
+  <!-- Nav Bar -->
+  <nav class="navbar">
+    <ul>
+      <li><a href='../index.html' transition='Home'>Home</a></li>
+      <li><a href='about.html' transition='About'>About</a></li>
+      <li><a href='/php/profile.php' transition='Profile'>Profile</a></li>
+      <li><a href='contact.html' transition='Contact'>Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="flex-container">
+    <h1>Make a Difference with GuardianLink</h1>
+  </div>
+
+  <!-- Org registration form -->
+  <div class="outer">
+
+    <div class="flex-container">
+      <h2>NGO Registration Form</h2>
+    </div>
+
+      <form action="/GuardianLink/php/org-registration.php">
+
+        <div class="flex-container">
+          <div class="flex-item-left">
+            <label for="orgName" class="labels">Organization Name</label>
+          </div>
+          <div class="flex-item-right">
+            <input type="text" class="inputs" id="orgName" name="orgName"
+              placeholder="Organization Name.." required>
+            <span class="error">*</span>
+          </div>
+        </div>
+
+        <div class="flex-container">
+          <div class="flex-item-left">
+            <label for="orgEmail" class="labels">Email</label>
+          </div>
+          <div class="flex-item-right">
+            <input type="text" class="inputs" id="orgEmail" name="orgEmail"
+              placeholder="Organization Email.." required>
+            <span class="error">*</span>
+          </div>
+        </div>
+
+        <div class="flex-container">
+          <div class="flex-item-left">
+            <label for="concern" class="labels">Areas of Concern</label>
+          </div>
+          <div class="flex-item-right">
+            <textarea class="inputs" id="concern" name="concern" placeholder="Write your concerns here.."
+              style="height:200px" maxlength="2000" required></textarea>
+            <span class="error">*</span>
+          </div>
+        </div>
+
+        <div class="flex-container">
+          <div class="flex-item-left">
+            <label for="pwd1" class="labels">New Password</label>
+          </div>
+          <div class="flex-item-right">
+            <input type="password" class="inputs" id="pwd1" name="pwd1" placeholder="Password.." required>
+            <span class="error">*</span>
+          </div>
+        </div>
+
+        <div class="flex-container">
+          <div class="flex-item-left">
+            <label for="pwd2" class="labels">Confirm Password</label>
+          </div>
+          <div class="flex-item-right">
+            <input type="password" class="inputs" id="pwd2" name="pwd2" placeholder="Confirm Password.."
+              required>
+            <span class="error">*</span>
+          </div>
+        </div>
+
+        <div class="flex-container">
+          <div class="flex-item-left">
+            <input type="submit" class="button" value="CREATE">
+          </div>
+          <div class="flex-item-right">
+            <p><span class="error">* required fields</span></p>
+          </div>
+        </div>
+
+      </form>
+  </div>
+  <br>
+
+  <!-- Volunteer registration form -->
+  <div class="outer">
+
+    <div class="flex-container">
+      <h2>Volunteer Registration Form</h2>
+    </div>
+    
+    <form action="/GuardianLink/php/vol-registration.php">
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="fname" class="labels">First Name</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="text" class="inputs" id="fname" name="fname" placeholder="First Name.."
+            required>
+          <span class="error">*</span>
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="sname" class="labels">Last Name</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="text" class="inputs" id="sname" name="sname" placeholder="Last Name.."
+            required>
+          <span class="error">*</span>
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="email" class="labels">Email</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="text" class="inputs" id="email" name="email" placeholder="Email.." required>
+          <span class="error">*</span>
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="hours" class="labels">Hours Available Per Week</label>
+        </div>
+        <div class="flex-item-right">
+          <select class="inputs" id="hours" name="hours" required>
+            <option value="0">0</option>
+          </select>
+          <span class="error">*</span>
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <p>Background Check</p>
+        </div>
+        <div class="flex-item-right">
+          <input type="radio" id="yes" name="crime" value="yes" required>Yes
+          <input type="radio" id="no" name="crime" value="no" checked>No
+          <span class="error">*</span>
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="resume" class="labels">Resume</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="file" class="inputs" id="resume" name="resume">
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="user" class="labels">Username</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="text" class="inputs" id="user" name="user" placeholder="Username.." required>
+          <span class="error">*</span>
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="pwd1" class="labels">New Password</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="password" class="inputs" id="pwd1" name="pwd1" placeholder="Password.." required>
+          <span class="error">*</span>
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="pwd2" class="labels">Confirm Password</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="password" class="inputs" id="pwd2" name="pwd2" placeholder="Confirm Password.."
+            required>
+          <span class="error">*</span>
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <input type="submit" class="button" value="CREATE">
+        </div>
+        <div class="flex-item-right">
+          <p><span class="error">* required fields</span></p>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+</body>
+
+<!-- Footer -->
+<footer class="footer">
+  Copyright &copy 2025 GuardianLink. Developed by R.K.
+</footer>
+</html>
