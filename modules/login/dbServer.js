@@ -1,6 +1,6 @@
 const express = require('express')
 const bcrypt = require('bcryptjs')
-const mysql = require('mysql2')
+const mysql = require('mysql')
 const path = require('path');
 const generateAccessToken = require("./generateAccessToken")  // import function
 require('dotenv').config()
@@ -29,6 +29,16 @@ const db = mysql.createPool({
   database: DB_DATABASE,
   port: DB_PORT
 })
+
+// Upgrade existing non-promise connection to user promise
+// db
+//   .promise()
+//   .query('SELECT 1')
+//   .then(([rows, fields]) => {
+//     console.log(rows);
+//   })
+//   .catch(console.log)
+//   .then(() => db.end());
 
 // connect to DB
 db.getConnection((err, connection) => {
@@ -89,7 +99,7 @@ app.post("/login", (req, res) => {
   db.getConnection (async (err, connection) => {
     if (err) throw (err);
 
-    const dbSearch = "SELECT * FROM user WHERE username = ?"
+    const dbSearch = "SELECT * FROM users WHERE username = ?"
     const query = mysql.format(dbSearch, [user])
 
     await connection.query(query, async (err, result) => {
