@@ -43,7 +43,8 @@ Overall flex container with smaller boxes inside */
     border-radius: 30px;
     padding: 15px;
     transition: all 0.4s ease-in-out;
-    margin: 15px 0;
+    margin: 15px 20px 0 0;
+    cursor: pointer;
 }
 .button:hover {
     background: #918868;
@@ -145,10 +146,11 @@ Overall flex container with smaller boxes inside */
 }
 
 .labels {
-    color: #002642;
+    color: #F9627D;
     font-size: 2vh;
     font-weight: bold;
     margin-top: 5px;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
 .inputs {
@@ -190,9 +192,13 @@ img {
     padding-right: 27px;
 }
 
+a {
+    text-decoration: none;
+}
+
 /* screen gets smaller than that adjust these settings for submit button */
-/* @media only screen and (max-width: 800px) {
-    #req-left {
-        align-self: center;
+@media only screen and (max-width: 800px) {
+    #forgot {
+        margin: 15px 40px 0 0;
     }
-} */
+}

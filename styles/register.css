@@ -41,6 +41,7 @@ Overall flex container with smaller boxes inside */
     padding: 15px;
     transition: all 0.4s ease-in-out;
     margin: 25px;
+    cursor: pointer;
 }
 .button:hover {
     background: #918868;

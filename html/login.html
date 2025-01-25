@@ -7,7 +7,7 @@
     <!-- make mobile friendly -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="../styles/login.css">
+    <link rel="stylesheet" href="/styles/login.css">
   </head>
 
 <body class="body">
@@ -23,7 +23,7 @@
   <!-- Nav Bar -->
   <nav class="navbar">
     <ul>
-      <li><a href='../index.html' transition='Home'>Home</a></li>
+      <li><a href='../../index.html' transition='Home'>Home</a></li>
       <li><a href='about.html' transition='About'>About</a></li>
       <li><a href='/profile.php' transition='Profile'>Profile</a></li>
       <li><a href='contact.html' transition='Contact'>Contact</a></li>
@@ -32,37 +32,36 @@
 
   <!-- OUTER flex container -->
   <div class="flex-container">
-    <img src="../img/guardian_logo.jpg" alt="GuardianLink Logo">
-    <form action="" method="POST">
+    <img src="/img/guardian_logo.jpg" alt="GuardianLink Logo">
   </div>
 
   <!-- Login Screen -->
-  <form class="outer">
+  <form action="/auth" class="outer" method="post">
     <div class="flex-container">
 
       <div class="flex-item-left">
       <!--<img src="#" alt="Avatar" class="avatar">-->
-        <label for="uname" class="labels"><b>Username</b></label>
+        <label for="username" class="labels"><b>Username</b></label>
       </div>
       <div class="flex-item-right">
-        <input type="text" class="inputs" id="uname" name="uname"
+        <input type="text" class="inputs" id="username" name="username"
           placeholder="Enter Username" required>
         <span class="error">*</span>
       </div>
 
       <div class="flex-item-left" id="pass">
-        <label for="pwd" class="labels"><b>Password</b></label>
+        <label for="password" class="labels"><b>Password</b></label>
       </div>
       <div class="flex-item-right">
-        <input type="password" class="inputs" id="pwd" name="pwd"
+        <input type="password" class="inputs" id="password" name="password"
           placeholder="Enter Password" required>
         <span class="error">*</span>
       </div>
 
       <div class="flex-item-left" id="submit">
-        <button type="submit" class="button">Login Now</button>
+        <input type="submit" class="button" value="Login">
       </div>
-      <div class="flex-item-right">
+      <div class="flex-item-right" id="forgot">
         <span><a href="##">Forgot password?</a></span>
       </div>
 
