@@ -1,0 +1,87 @@
+<html lang="en">
+  <head>
+    <title>Profile</title>
+    <meta name="author" content="R.K.">
+    <meta charset="utf-8">
+    <!-- make mobile friendly -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/styles/profile.css">
+  </head>
+
+  <body class="body">
+
+    <!-- Navigation Bars -->
+    <!-- Login Bar -->
+    <nav class="logbar">
+      <ul>
+        <li><a href='/html/login.html' transition='Sign In'>Sign In</a></li>
+        <li><a href='/html/signout.html' transition='Sign Out'>Sign Out</a></li>
+        <li><a href='/html/register.html' transition='Register'>Register</a></li>
+      </ul>
+    </nav>
+    <!-- Nav Bar -->
+    <nav class="navbar">
+      <ul>
+        <li><a href='/index.html' transition='Home'>Home</a></li>
+        <li><a href='/html/about.html' transition='About'>About</a></li>
+        <li><a href='/html/profile.html' transition='Profile'>Profile</a></li>
+        <li><a href='/html/contact.html' transition='Contact'>Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="flex-container">
+      <h1>Profile Page</h1>
+    </div>
+
+    <!-- Display User Details -->
+    <div class="flex-container">
+      <h2>Account Details:</h2><br>
+    </div>
+
+    <div class="flex-container">
+      <div class="flex-item-left">
+        <label for="user" class="labels">Username:</label>
+      </div>
+      <div class="flex-item-right">
+        <span class="labels" id="user">
+          <b><?=htmlspecialchars($_SESSION['user'], ENT_QUOTES)?></b>
+        </span>
+      </div>
+
+      <div class="flex-item-left">
+        <label for="fname" class="labels">Forename:</label>
+      </div>
+      <div class="flex-item-right">
+        <span class="labels" id="fname"><b>
+          <?=htmlspecialchars($_SESSION['fn'], ENT_QUOTES)?></b>
+        </span>
+      </div>
+
+      <div class="flex-item-left">
+        <label for="sname" class="labels">Surname:</label>
+      </div>
+      <div class="flex-item-right">
+        <span class="labels" id="sname" id="account">
+          <b><?=htmlspecialchars($_SESSION['sn'], ENT_QUOTES)?></b>
+        </span>
+      </div>
+
+      <div class="flex-item-left">
+        <label for="email" class="labels">Email:</label>
+      </div>
+      <div class="flex-item-right">
+        <span class="labels" id="email">
+          <b><?=htmlspecialchars($_SESSION['email'], ENT_QUOTES)?></b>
+        </span>
+      </div>
+    </div>
+
+</body>
+
+
+<!-- Footer -->
+<footer class="footer">
+  Copyright &copy 2025 GuardianLink. Developed by R.K.
+</footer>
+</html>

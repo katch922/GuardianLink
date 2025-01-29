@@ -16,19 +16,19 @@
   <!-- Login Bar -->
   <nav class="logbar">
     <ul>
-      <li><a href='login.html' transition='Sign In'>Sign In</a></li>
-      <li><a href='php/signout.php' transition='Sign Out'>Sign Out</a></li>
-      <li><a href='register.html' transition='Register'>Register</a></li>
+      <li><a href='/login' transition='Sign In'>Sign In</a></li>
+      <li><a href='/html/signout.html' transition='Sign Out'>Sign Out</a></li>
+      <li><a href='/register' transition='Register'>Register</a></li>
     </ul>
   </nav>
 
   <!-- Nav Bar -->
   <nav class="navbar">
     <ul>
-      <li><a href='../index.html' transition='Home'>Home</a></li>
-      <li><a href='about.html' transition='About'>About</a></li>
-      <li><a href='/php/profile.php' transition='Profile'>Profile</a></li>
-      <li><a href='contact.html' transition='Contact'>Contact</a></li>
+      <li><a href='/' transition='Home'>Home</a></li>
+      <li><a href='/about' transition='About'>About</a></li>
+      <li><a href='/html/profile.html' transition='Profile'>Profile</a></li>
+      <li><a href='/contact' transition='Contact'>Contact</a></li>
     </ul>
   </nav>
 
@@ -43,7 +43,7 @@
       <h2>NGO Registration Form</h2>
     </div>
 
-      <form action="/GuardianLink/php/org-registration.php">
+      <form action="">
 
         <div class="flex-container">
           <div class="flex-item-left">
@@ -119,7 +119,7 @@
       <h2>Volunteer Registration Form</h2>
     </div>
     
-    <form action="/GuardianLink/php/vol-registration.php">
+    <form action="vol-registration.php">
 
       <div class="flex-container">
         <div class="flex-item-left">
@@ -158,9 +158,7 @@
           <label for="hours" class="labels">Hours Available Per Week</label>
         </div>
         <div class="flex-item-right">
-          <select class="inputs" id="hours" name="hours" required>
-            <option value="0">0</option>
-          </select>
+          <select class="inputs" id="hours" name="hours" required></select>
           <span class="error">*</span>
         </div>
       </div>
@@ -230,6 +228,8 @@
 
 </body>
 
+<!-- will let user choose from 0 to 168 for id="hours" Hours available per week -->
+<script src="/src/hours.js"></script>
 <!-- Footer -->
 <footer class="footer">
   Copyright &copy 2025 GuardianLink. Developed by R.K.
