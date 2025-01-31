@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="/styles/register.css">
+    <script defer src="/src/validateForm.js"></script>
+    <script defer src="/src/notify.js"></script>
   </head>
 
 <body class="body">
@@ -16,8 +18,8 @@
   <!-- Login Bar -->
   <nav class="logbar">
     <ul>
-      <li><a href='/login' transition='Sign In'>Sign In</a></li>
-      <li><a href='/html/signout.html' transition='Sign Out'>Sign Out</a></li>
+      <li><a id="loginBtn" href='/login' transition='Sign In'>Sign In</a></li>
+      <li><a href='/logout' transition='Sign Out'>Sign Out</a></li>
       <li><a href='/register' transition='Register'>Register</a></li>
     </ul>
   </nav>
@@ -27,7 +29,7 @@
     <ul>
       <li><a href='/' transition='Home'>Home</a></li>
       <li><a href='/about' transition='About'>About</a></li>
-      <li><a href='/html/profile.html' transition='Profile'>Profile</a></li>
+      <li><a href='/profile' transition='Profile'>Profile</a></li>
       <li><a href='/contact' transition='Contact'>Contact</a></li>
     </ul>
   </nav>
@@ -43,14 +45,14 @@
       <h2>NGO Registration Form</h2>
     </div>
 
-      <form action="">
+      <form action="/createOrgUser" method="post">
 
         <div class="flex-container">
           <div class="flex-item-left">
             <label for="orgName" class="labels">Organization Name</label>
           </div>
           <div class="flex-item-right">
-            <input type="text" class="inputs" id="orgName" name="orgName"
+            <input type="text" class="inputs" id="orgName" name="orgName" maxlength="100"
               placeholder="Organization Name.." required>
             <span class="error">*</span>
           </div>
@@ -72,28 +74,21 @@
             <label for="concern" class="labels">Areas of Concern</label>
           </div>
           <div class="flex-item-right">
-            <textarea class="inputs" id="concern" name="concern" placeholder="Write your concerns here.."
-              style="height:200px" maxlength="2000" required></textarea>
+            <textarea class="inputs" id="concern" name="concern"
+              placeholder="Write your concerns here.." style="height:200px"
+              maxlength="2000" required></textarea>
             <span class="error">*</span>
           </div>
         </div>
 
         <div class="flex-container">
           <div class="flex-item-left">
-            <label for="pwd1" class="labels">New Password</label>
+            <label for="orgPass1" class="labels">New Password</label>
           </div>
           <div class="flex-item-right">
-            <input type="password" class="inputs" id="pwd1" name="pwd1" placeholder="Password.." required>
-            <span class="error">*</span>
-          </div>
-        </div>
-
-        <div class="flex-container">
-          <div class="flex-item-left">
-            <label for="pwd2" class="labels">Confirm Password</label>
-          </div>
-          <div class="flex-item-right">
-            <input type="password" class="inputs" id="pwd2" name="pwd2" placeholder="Confirm Password.."
+            <input type="password" class="inputs" id="orgPass1" name="orgPass1"
+              placeholder="Password.." pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+              title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
               required>
             <span class="error">*</span>
           </div>
@@ -101,7 +96,20 @@
 
         <div class="flex-container">
           <div class="flex-item-left">
-            <input type="submit" class="button" value="CREATE">
+            <label for="orgPass2" class="labels">Confirm Password</label>
+          </div>
+          <div class="flex-item-right">
+            <input type="password" class="inputs" id="orgPass2" name="pass2"
+              placeholder="Confirm Password.."
+              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+              required>
+            <span class="error">*</span>
+          </div>
+        </div>
+
+        <div class="flex-container">
+          <div class="flex-item-left">
+            <input type="submit" class="button" id="orgSubmit" value="CREATE">
           </div>
           <div class="flex-item-right">
             <p><span class="error">* required fields</span></p>
@@ -119,15 +127,15 @@
       <h2>Volunteer Registration Form</h2>
     </div>
     
-    <form action="vol-registration.php">
+    <form action="/createVolUser" method="post">
 
       <div class="flex-container">
         <div class="flex-item-left">
           <label for="fname" class="labels">First Name</label>
         </div>
         <div class="flex-item-right">
-          <input type="text" class="inputs" id="fname" name="fname" placeholder="First Name.."
-            required>
+          <input type="text" class="inputs" id="fname" name="fname"
+            placeholder="First Name.." required>
           <span class="error">*</span>
         </div>
       </div>
@@ -137,25 +145,27 @@
           <label for="sname" class="labels">Last Name</label>
         </div>
         <div class="flex-item-right">
-          <input type="text" class="inputs" id="sname" name="sname" placeholder="Last Name.."
+          <input type="text" class="inputs" id="sname" name="sname"
+            placeholder="Last Name.." required>
+          <span class="error">*</span>
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="volEmail" class="labels">Email</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="text" class="inputs" id="volEmail" name="volEmail" placeholder="Email.."
             required>
           <span class="error">*</span>
         </div>
       </div>
-
-      <div class="flex-container">
-        <div class="flex-item-left">
-          <label for="email" class="labels">Email</label>
-        </div>
-        <div class="flex-item-right">
-          <input type="text" class="inputs" id="email" name="email" placeholder="Email.." required>
-          <span class="error">*</span>
-        </div>
-      </div>
-
       <div class="flex-container">
         <div class="flex-item-left">
           <label for="hours" class="labels">Hours Available Per Week</label>
+          <!-- will let user choose from 0 to 168 for id="hours" Hours per week -->
+          <script defer src="/src/hours.js"></script>
         </div>
         <div class="flex-item-right">
           <select class="inputs" id="hours" name="hours" required></select>
@@ -185,30 +195,12 @@
 
       <div class="flex-container">
         <div class="flex-item-left">
-          <label for="user" class="labels">Username</label>
+          <label for="volPass1" class="labels">New Password</label>
         </div>
         <div class="flex-item-right">
-          <input type="text" class="inputs" id="user" name="user" placeholder="Username.." required>
-          <span class="error">*</span>
-        </div>
-      </div>
-
-      <div class="flex-container">
-        <div class="flex-item-left">
-          <label for="pwd1" class="labels">New Password</label>
-        </div>
-        <div class="flex-item-right">
-          <input type="password" class="inputs" id="pwd1" name="pwd1" placeholder="Password.." required>
-          <span class="error">*</span>
-        </div>
-      </div>
-
-      <div class="flex-container">
-        <div class="flex-item-left">
-          <label for="pwd2" class="labels">Confirm Password</label>
-        </div>
-        <div class="flex-item-right">
-          <input type="password" class="inputs" id="pwd2" name="pwd2" placeholder="Confirm Password.."
+          <input type="password" class="inputs" id="volPass1" name="volPass1"
+            placeholder="Password.." pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+            title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
             required>
           <span class="error">*</span>
         </div>
@@ -216,7 +208,20 @@
 
       <div class="flex-container">
         <div class="flex-item-left">
-          <input type="submit" class="button" value="CREATE">
+          <label for="volPass2" class="labels">Confirm Password</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="password" class="inputs" id="volPass2" name="pass2"
+            placeholder="Confirm Password.."
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+            required>
+          <span class="error">*</span>
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <input type="submit" class="button" id="volSubmit" value="CREATE">
         </div>
         <div class="flex-item-right">
           <p><span class="error">* required fields</span></p>
@@ -228,8 +233,6 @@
 
 </body>
 
-<!-- will let user choose from 0 to 168 for id="hours" Hours available per week -->
-<script src="/src/hours.js"></script>
 <!-- Footer -->
 <footer class="footer">
   Copyright &copy 2025 GuardianLink. Developed by R.K.

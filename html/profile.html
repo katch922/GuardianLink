@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="/styles/profile.css">
+    <!-- Will populate user info page -->
+    <script defer src="/src/userInfo.js"></script>
   </head>
 
   <body class="body">
@@ -15,18 +17,18 @@
     <!-- Login Bar -->
     <nav class="logbar">
       <ul>
-        <li><a href='/html/login.html' transition='Sign In'>Sign In</a></li>
-        <li><a href='/html/signout.html' transition='Sign Out'>Sign Out</a></li>
-        <li><a href='/html/register.html' transition='Register'>Register</a></li>
+        <li><a href='/login' transition='Sign In' hidden>Sign In</a></li>
+        <li><a href='/logout' transition='Sign Out'>Sign Out</a></li>
+        <li><a href='/register' transition='Register'>Register</a></li>
       </ul>
     </nav>
     <!-- Nav Bar -->
     <nav class="navbar">
       <ul>
-        <li><a href='/index.html' transition='Home'>Home</a></li>
-        <li><a href='/html/about.html' transition='About'>About</a></li>
-        <li><a href='/html/profile.html' transition='Profile'>Profile</a></li>
-        <li><a href='/html/contact.html' transition='Contact'>Contact</a></li>
+        <li><a href='/' transition='Home'>Home</a></li>
+        <li><a href='/about' transition='About'>About</a></li>
+        <li><a href='/profile' transition='Profile'>Profile</a></li>
+        <li><a href='/contact' transition='Contact'>Contact</a></li>
       </ul>
     </nav>
 
@@ -35,50 +37,41 @@
     </div>
 
     <!-- Display User Details -->
-    <div class="flex-container">
-      <h2>Account Details:</h2><br>
+    <div class="flex-container" id="account">
+      <h2>Account Details:</h2>
     </div>
 
     <div class="flex-container">
-      <div class="flex-item-left">
-        <label for="user" class="labels">Username:</label>
-      </div>
-      <div class="flex-item-right">
-        <span class="labels" id="user">
-          <b><?=htmlspecialchars($_SESSION['user'], ENT_QUOTES)?></b>
-        </span>
-      </div>
 
       <div class="flex-item-left">
         <label for="fname" class="labels">Forename:</label>
       </div>
       <div class="flex-item-right">
-        <span class="labels" id="fname"><b>
-          <?=htmlspecialchars($_SESSION['fn'], ENT_QUOTES)?></b>
-        </span>
+        <span class="span" id="fname"></span>
       </div>
 
       <div class="flex-item-left">
         <label for="sname" class="labels">Surname:</label>
       </div>
       <div class="flex-item-right">
-        <span class="labels" id="sname" id="account">
-          <b><?=htmlspecialchars($_SESSION['sn'], ENT_QUOTES)?></b>
-        </span>
+        <span class="span" id="sname" id="account"></span>
       </div>
 
       <div class="flex-item-left">
         <label for="email" class="labels">Email:</label>
       </div>
       <div class="flex-item-right">
-        <span class="labels" id="email">
-          <b><?=htmlspecialchars($_SESSION['email'], ENT_QUOTES)?></b>
-        </span>
+        <span class="span" id="email"></span>
+      </div>
+      <div class="flex-item-left">
+        <label for="orgName" class="labels">Organization Name:</label>
+      </div>
+      <div class="flex-item-right">
+        <span class="span" id="orgName"></span>
       </div>
     </div>
 
 </body>
-
 
 <!-- Footer -->
 <footer class="footer">
