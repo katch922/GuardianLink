@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="/styles/register.css">
-    <script defer src="/src/validateForm.js"></script>
-    <script defer src="/src/notify.js"></script>
+    <script defer src="/src/validation.js"></script>
+    <script defer src="/src/register.js"></script>
   </head>
 
 <body class="body">
@@ -44,8 +44,6 @@
     <div class="flex-container">
       <h2>NGO Registration Form</h2>
     </div>
-
-      <form action="/createOrgUser" method="post">
 
         <div class="flex-container">
           <div class="flex-item-left">
@@ -108,6 +106,10 @@
         </div>
 
         <div class="flex-container">
+          <span id="orgNotify"></span>
+        </div>
+
+        <div class="flex-container">
           <div class="flex-item-left">
             <input type="submit" class="button" id="orgSubmit" value="CREATE">
           </div>
@@ -116,7 +118,6 @@
           </div>
         </div>
 
-      </form>
   </div>
   <br>
 
@@ -127,7 +128,7 @@
       <h2>Volunteer Registration Form</h2>
     </div>
     
-    <form action="/createVolUser" method="post">
+    <form action="/createVolUser" method="post" enctype="multipart/form-data">
 
       <div class="flex-container">
         <div class="flex-item-left">
@@ -189,7 +190,8 @@
           <label for="resume" class="labels">Resume</label>
         </div>
         <div class="flex-item-right">
-          <input type="file" class="inputs" id="resume" name="resume">
+          <input type="file" class="inputs" id="resume" name="resume"
+            accept=".doc,.docx,.pdf,.odt">
         </div>
       </div>
 
@@ -217,6 +219,10 @@
             required>
           <span class="error">*</span>
         </div>
+      </div>
+
+      <div class="flex-container">
+        <span id="volNotify"></span>
       </div>
 
       <div class="flex-container">

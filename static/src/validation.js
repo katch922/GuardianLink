@@ -2,6 +2,7 @@
 const orgSubmit = document.getElementById("orgSubmit");
 const volSubmit = document.getElementById("volSubmit");
 
+/*-----------------VALIDATION ORG-------------------------*/
 // validate fields for Org registration form
 orgSubmit.onclick = function() {
   // validate email
@@ -29,6 +30,7 @@ orgSubmit.onclick = function() {
   }
 }
 
+/*-----------------VALIDATION VOL-------------------------*/
 // Validate fields for Volunteer Registration Form
 volSubmit.onclick = function() {
   // validate email
@@ -50,7 +52,7 @@ volSubmit.onclick = function() {
   }
   else if (pass1 !== pass2) {
     alert("Passwords do not match");
-    location.reload();
+    //location.reload();
     return false;
   }
 
@@ -59,12 +61,24 @@ volSubmit.onclick = function() {
   const lastName = document.getElementById("sname").value;
 
   if (!nameIsValid(firstName) || (!nameIsValid(lastName))) {
-    alert(`Only letters for name`);
+    alert("Only letters allowed in name!");
     location.reload();
     return false;
   }
+
+  // validate file type
+  const file = document.getElementById("resume");
+
+  if (file.length > 0) {
+    if (!validFileType(file)) {
+      alert("FileTypes allowed (.pdf .doc .docx .odt)");
+      location.reload();
+      return false;
+    }
+  }
 }
 
+/*-----------------METHODS--------------------------------*/
 // method to validation email
 function emailIsValid(email) {
   const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -90,7 +104,7 @@ function passIsValid(pass) {
 
 // method to validate name
 function nameIsValid(name) {
-  const regex = /^[a-zA-Z]{1,19}$/;
+  const regex = /^[a-zA-Z][a-zA-Z]{1,19}$/;
 
   if (regex.test(name)) {
       return true;
@@ -99,73 +113,14 @@ function nameIsValid(name) {
   }
 }
 
-// function active() {
-//   if(pass1.value.length >= 6){
-//     btn.removeAttribute("disabled", "");
-//     btn.classList.add("active");
-//     pass2.removeAttribute("disabled", "");
-//   }else{
-//     btn.setAttribute("disabled", "");
-//     btn.classList.remove("active");
-//     pswrd_2.setAttribute("disabled", "");
-//   }
-// }
-// btn.onclick = function(){
-//   if(pass1.value !== pass2.value){
-//     errorText.style.display = "block";
-//     errorText.classList.remove("matched");
-//     errorText.textContent = "Error! Confirm Password Not Match";
-//     return false;
-//   }else{
-//     errorText.style.display = "block";
-//     errorText.classList.add("matched");
-//     errorText.textContent = "Nice! Confirm Password Matched";
-//     return false;
-//   }
-// }
-// function active_2(){
-//   if(pass2.value != ""){
-//     showBtn.style.display = "block";
-//     showBtn.onclick = function(){
-//       if((pass1.type == "password") && (pass2.type == "password")){
-//         pass1.type = "text";
-//         pass1.type = "text";
-//         this.textContent = "Hide";
-//         this.classList.add("active");
-//       }else{
-//         pass1.type = "password";
-//         pass2.type = "password";
-//         this.textContent = "Show";
-//         this.classList.remove("active");
-//       }
-//     }
-//   }else{
-//     showBtn.style.display = "none";
-//   }
-// }
+// method to validate files
+function validFileType(file) {
+  const fileTypes = [
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/vnd.oasis.opendocument.text"
+  ];
 
-
-// // make the connection
-// let url = 'http://localhost:3000/wrongPass';
-// xhr.open("POST", url, true);
-// xhr.send();
-// xhr.responseText = "json";
-// xhr.onload = () => {
-//   if (xhr.status == 400) {
-//     let jsonResponse = JSON.parse(xhr.response);
-//     error.textContent = jsonResponse.error;
-//   }
-//   // if (xhr.readyState == 4 && xhr.status == 200) {
-//   //   // get reponse and parse it to a new var
-//   //   let jsonResponse = JSON.parse(xhr.response);
-
-//   //   // add to Profile Page elements
-//   //   user.textContent = jsonResponse.user;
-//   //   firstName.textContent = jsonResponse.firstName;
-//   //   lastName.textContent = jsonResponse.lastName;
-//   //   email.textContent = jsonResponse.email;
-//   // }
-//   else {
-//     console.log(`"Error:" ${xhr.status}`);
-//   }
-// };
+  return fileTypes.includes(file.type);
+}

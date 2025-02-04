@@ -24,23 +24,26 @@ Overall flex container with smaller boxes inside */
 }
 /* will flex to the left instead */
 .flex-item-left {
-    flex: 25%;
+    display: flex;
+    justify-content: flex-end;
+    flex: 50%;
+    padding-right: 20px;
 }
 /* flex-container-right will flex to the right */
 .flex-item-right {
-    flex: 75%;
+    flex: 50%;
 }
 
 /* Default button style */
 .button {
     color: #fff8f0;
-    font-size: 2vh;
+    font-size: 1.8vh;
     background: #002642;
     border: none;
     border-radius: 30px;
     padding: 15px;
     transition: all 0.4s ease-in-out;
-    margin: 25px;
+    margin: 15px 20px 0 0;
     cursor: pointer;
 }
 .button:hover {
@@ -143,31 +146,43 @@ Overall flex container with smaller boxes inside */
 }
 
 .labels {
-    color: #918868;
+    color: #F9627D;
     font-size: 2vh;
+    font-weight: bold;
+    margin-top: 5px;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
 .inputs {
     color: #002642;
     border: 1px solid #918868;
-    width: 95%;
-    min-width: 400px;
     padding: 12px;
     border-radius: 5px;
-    resize: none;
-    background: #fff8f0;
+    background:#CDDDDD;
+    ;
     margin-top: 10px;
 }
 
-.error {
-    color: #F9627D;
-    font-size: 1.5vh;
+#error {
+    color: #5F7470;
+    font-size: 3vh;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
-#submit {
-    display: flex;
-    flex: 50%;
+
+/* Mobile responsive weblayout */
+@media (max-width: 800px) {
+    .flex-container {
+        flex-direction: column;
+    }
 }
+/* Makes a one column layout instead of a two-column layout
+@media (max-width: 800px) {
+    .flex-item-right, .flex-item-left {
+        flex: 100%;
+    }
+}
+End of Default Styling
+### END ### */
 
 /* title page color and styling */
 h1 {
@@ -191,54 +206,9 @@ p {
     font-weight: bold;
 }
 
-.span {
+.table {
+    background: #CDDDDD;
     color: #002642;
-    font-size: 2vh;
-    font-weight: bold;
-}
-
-/* Mobile responsive weblayout */
-@media (max-width: 800px) {
-    .flex-container {
-        flex-direction: column;
-    }
-}
-/* Makes a one column layout instead of a two-column layout
-@media (max-width: 800px) {
-    .flex-item-right, .flex-item-left {
-        flex: 100%;
-    }
-}
-End of Default Styling
-### END ### */
-
-#account {
-    justify-content: flex-start;
-    align-items: flex-start;
-}
-
-h3 {
-    color: #918868;
     font-size: 2.5vh;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-}
-
-#delBtn {
-    font-size: 2vh;
-    background: #F9627D;
-    margin: 0;
-}
-#delBtn:hover {
-    color: #fff8f0;
-    background: #F9627D80;
-}
-
-#del-container {
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-#warn {
-    margin-left: 20px;
+    padding: 25px;
 }

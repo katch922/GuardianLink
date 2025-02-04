@@ -213,11 +213,6 @@ End of Default Styling
     padding-top: 10px;
 }
 
-h3 {
-    font-size: 1.5vh;
-    color: #F9627D;
-}
-
 /* change flex amount for submit and require */
 #req-left {
     display: flex;
@@ -231,6 +226,13 @@ h3 {
     align-items: flex-start;
     flex: 30%;
 }
+
+#orgNotify,#volNotify {
+    color: #002642;
+    background: #F9627D;
+    font-size: 1.5vh;
+}
+
 /* screen gets smaller than that adjust these settings for submit button */
 @media only screen and (max-width: 800px) {
     #req-left {

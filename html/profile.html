@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/styles/profile.css">
     <!-- Will populate user info page -->
     <script defer src="/src/userInfo.js"></script>
+    <script defer src="/src/delUser.js"></script>
   </head>
 
   <body class="body">
@@ -34,6 +35,9 @@
 
     <div class="flex-container">
       <h1>Profile Page</h1>
+    </div>
+    <div class="flex-container">
+      <h3 id="msg">Thank you for signing up with GuardianLink</h3>
     </div>
 
     <!-- Display User Details -->
@@ -69,6 +73,12 @@
       <div class="flex-item-right">
         <span class="span" id="orgName"></span>
       </div>
+      <div class="flex-item-left" id="tools"></div>
+    </div>
+
+    <div class="flex-container" id="del-container">
+      <input type="submit" class="button" id="delBtn" value="DELETE">
+      <p id="warn">Warning: this will delete the account</p>
     </div>
 
 </body>

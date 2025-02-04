@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="/styles/login.css">
+    <script defer src="/src/login.js"></script>
   </head>
 
 <body class="body">
@@ -36,8 +37,11 @@
     <img src="/img/guardian_logo.jpg" alt="GuardianLink Logo">
   </div>
 
+  <div class="flex-container">
+    <span id="msg"></span>
+  </div>
+
   <!-- Login Screen -->
-  <form action="/login" class="outer" method="post">
     <div class="flex-container">
 
       <div class="flex-item-left">
@@ -60,14 +64,13 @@
       </div>
 
       <div class="flex-item-left" id="submit">
-        <input type="submit" class="button" value="Login">
+        <input type="submit" class="button" id="submit" value="Login">
       </div>
       <div class="flex-item-right" id="forgot">
         <span><a href="##">Forgot password?</a></span>
       </div>
 
       </div>
-    </form>
 
 </body>
 

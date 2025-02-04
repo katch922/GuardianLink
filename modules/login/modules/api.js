@@ -45,7 +45,7 @@ api.get("/login", function(req, res) {
 // Signout Page
 api.get("/logout", function(req, res) {
   if (req.session.auth) {
-    res.cookie(req.session.user, {maxAge: 0});
+    res.cookie(req.session.cookieId, {maxAge: 0});
     req.session.destroy();
     res.status(200).redirect('/login');
   }
@@ -63,6 +63,18 @@ api.get("/register", function(req, res) {
 api.get("/admin", function(req, res) {
   if (req.session.auth && req.session.type === 'admin') {
     res.sendFile(path.join(homeDir, '/html/admin.html'));
+  }
+  else {
+    res.status(403).end();
+  }
+});
+
+api.get("/orgList", function(req, res) {
+  if (req.session.auth && req.session.type === 'vol') {
+    res.sendFile(path.join(homeDir, 'html/org.html'));
+  }
+  else if (req.session.auth && req.session.type === 'org') {
+    res.sendFile(path.join(homeDir, 'html/vol.html'));
   }
   else {
     res.status(403).end();

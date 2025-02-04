@@ -4,8 +4,8 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 // import routes
-const routes = require("./routes/api");
-const dbRoutes = require("./routes/mysql");
+const routes = require("./modules/api");
+const dbRoutes = require("./modules/mysql");
 
 // // import some env vars
 const port = process.env.PORT;  // port for express
@@ -38,12 +38,20 @@ app.listen(port, () => console.log(`Server Started on port:${port}`));
 app.get("/", routes);
 app.get("/about", routes);
 app.get("/profile", routes);
-app.post("/profile", dbRoutes);
 app.get("/contact", routes);
 app.get("/login", routes);
-app.post("/login", dbRoutes);
 app.get("/logout", routes);
 app.get("/register", routes);
+app.get("/admin", routes);
+app.get('/orgList', routes);
+// dbRoutes (mysql)
+app.post("/profile", dbRoutes);
+app.post("/login", dbRoutes);
 app.post("/createOrgUser", dbRoutes);
 app.post("/createVolUser", dbRoutes);
-app.get("/admin", routes);
+app.post("/createBasicUser", dbRoutes);
+app.post("/admin", dbRoutes);
+app.post("/deleteUser", dbRoutes);
+app.post("/editUser", dbRoutes);
+app.post("/orgList", dbRoutes);
+app.post("/delUser", dbRoutes);

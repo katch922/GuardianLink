@@ -143,9 +143,9 @@ Overall flex container with smaller boxes inside */
 }
 
 .labels {
-    color: #918868;
+    color: #002642;
     font-size: 2vh;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    font-weight: bold;
 }
 
 .inputs {
@@ -187,8 +187,9 @@ h2 {
 /* Para styling */
 p {
     color: #002642;
-    font-size: 2vh;
+    font-size: 1.5vh;
     font-weight: bold;
+    margin-left: 20px;
 }
 
 .span {
@@ -211,3 +212,36 @@ p {
 }
 End of Default Styling
 ### END ### */
+
+.outer {
+    background: #CDDDDD;
+    margin: 30px;
+    padding-top: 10px;
+}
+
+#delBtn {
+    font-size: 1vh;
+    background: #F9627D;
+    margin: 0;
+}
+#delBtn:hover {
+    color: #fff8f0;
+    background: #F9627D80;
+}
+
+
+#del-container {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#warn {
+    margin-left: 20px;
+}
+
+#notify {
+    color: #002642;
+    background: #F9627D;
+    font-size: 1.5vh;
+}
