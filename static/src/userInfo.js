@@ -40,6 +40,13 @@ xhr.onload = () => {
       button.onclick = function() { window.location.href='/orgList' };
       document.getElementById("tools").appendChild(button);
     }
+    else if (type === 'org') {
+      // use is volunteer, display link for Organization List
+      button.className = 'button';
+      button.textContent = 'Vol List';
+      button.onclick = function() { window.location.href='/volList' };
+      document.getElementById("tools").appendChild(button);
+    }
   }
   else {
     console.log(`"Error:" ${xhr.status}`);

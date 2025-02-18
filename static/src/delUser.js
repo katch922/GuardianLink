@@ -15,6 +15,7 @@ delBtn.onclick = function(req, res) {
       // get reponse and parse it to a new var
       const jsonResponse = JSON.parse(xhr1.response);
 
+      notify.style["background"] = "#F9627D";
       notify.textContent = jsonResponse.message;
     }
     else if (xhr1.readyState == 4 && xhr1.status == 200) {

@@ -73,11 +73,18 @@ api.get("/orgList", function(req, res) {
   if (req.session.auth && req.session.type === 'vol') {
     res.sendFile(path.join(homeDir, 'html/org.html'));
   }
-  else if (req.session.auth && req.session.type === 'org') {
+  else {
+    res.status(403).end();
+  }
+});
+
+api.get("/volList", function(req, res) {
+  if (req.session.auth && req.session.type === 'org') {
     res.sendFile(path.join(homeDir, 'html/vol.html'));
   }
   else {
     res.status(403).end();
   }
 });
+
 module.exports = api;

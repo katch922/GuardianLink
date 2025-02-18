@@ -67,18 +67,26 @@
       <div class="flex-item-right">
         <span class="span" id="email"></span>
       </div>
+
       <div class="flex-item-left">
         <label for="orgName" class="labels">Organization Name:</label>
       </div>
       <div class="flex-item-right">
         <span class="span" id="orgName"></span>
       </div>
+
       <div class="flex-item-left" id="tools"></div>
     </div>
 
-    <div class="flex-container" id="del-container">
-      <input type="submit" class="button" id="delBtn" value="DELETE">
-      <p id="warn">Warning: this will delete the account</p>
+    <div class="flex-container">
+      <div class="flex-item-left" id="edit-container">
+        <input type="submit" class="button" value="UPDATE">
+        <p>Update user info</p>
+      </div>
+      <div class="flex-item-right" id="edit-container">
+        <input type="submit" class="button" id="delBtn" value="DELETE">
+        <p id="warn">Warning! This will delete the account</p>
+      </div>
     </div>
 
 </body>

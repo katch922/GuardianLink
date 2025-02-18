@@ -68,8 +68,6 @@ api.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.pass;
 
-  console.log(`${email} ${password}`);
-
   db.getConnection (async (err, connection) => {
     if (err) throw (err);
 
@@ -82,7 +80,7 @@ api.post("/login", (req, res) => {
       if (err) throw (err);
 
       if (result.length == 0) {
-        res.send("Invalid Login Credentials!");
+        res.status(401).send({ message: 'Authenticaton Failure' });
       }
       else {
         // get hashed pass from result & save some other useful info
@@ -446,7 +444,7 @@ api.post("/editUser", async (req, res) => {
   }
 });       // end of api.post()
 
-// DELETE user
+// DELETE user via Admin Tools
 api.post("/deleteUser", async (req, res) => {
   const email = req.body.users;
 
@@ -496,12 +494,11 @@ api.post("/orgList", async(req, res) => {
       if (err) throw (err);
 
       console.log(">>> Query Success");
-      console.log(result.length);
 
       res.status(200).send(result);
     }); // end of conn.query()
   });   // end of db.getConnection()
-});
+});     // end of /orgList
 
 api.post("/volList", async(req, res) => {
   const type = 'vol';
@@ -519,24 +516,26 @@ api.post("/volList", async(req, res) => {
       if (err) throw (err);
 
       console.log(">>> Query Success");
-      console.log(result.length);
 
       res.status(200).send(result);
     }); // end of conn.query()
   });   // end of db.getConnection()
-});
+});     // end of /volList
 
+// delete your own user
 api.post("/delUser", async (req, res) => {
   const email = req.session.email;
+  const type = req.session.type;
 
   db.getConnection(async (err, conn) => {
     if (err) throw (err);
 
-    const dbSearch = "SELECT email FROM users WHERE email = ?";
-    const query = mysql.format(dbSearch, [email]);
+    const dbSearch = "SELECT email FROM users WHERE user_type = ?";
+    const query = mysql.format(dbSearch, [type]);
 
     const dbDelete = "DELETE FROM users WHERE email = ?";
     const delUser = mysql.format(dbDelete, [email]);
+
 
     await conn.query(query, async (err, result) => {
       if (err) throw (err);
@@ -546,8 +545,14 @@ api.post("/delUser", async (req, res) => {
         console.log(`>>>${email} No such account`);
         res.status(400).send({ message: `${email} does not exist` });
       }
+      // do not delete if only one admin user
+      else if (type === 'admin' && result.length === 1) {
+        conn.release();
+        console.log(`Must have at least one ${type} user`);
+        res.status(400).send({ message: `Must have at least one ${type} user` });
+      }
       else {
-        await conn.query (delUser, (err, result) => {
+        await conn.query (delUser, (err) => {
           conn.release();
 
           if (err) throw (err);
@@ -560,6 +565,6 @@ api.post("/delUser", async (req, res) => {
       }
     }); // end of conn.query()
   });   // end of db.getConnection()
-});
+});     // end of /delUser
 
 module.exports = api;

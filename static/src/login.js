@@ -25,8 +25,7 @@ submit.onclick = function(req, res) {
       msg.textContent = jsonResponse.message;
     }
     else if (xhr.readyState == 4 && xhr.status == 200) {
-      const jsonResponse = JSON.parse(xhr.response);
-
+      // redirect to profile page
       window.location.href='/profile';
     }
   };

@@ -233,8 +233,9 @@ h3 {
     background: #F9627D80;
 }
 
-#del-container {
-    flex-direction: row;
+#edit-container {
+    flex: 50%;
+    display: flex;
     justify-content: center;
     align-items: center;
 }

@@ -211,4 +211,9 @@ p {
     color: #002642;
     font-size: 2.5vh;
     padding: 25px;
+    width: 100%;
+    text-align: left;
+}
+td {
+    padding-top: 75px;
 }
