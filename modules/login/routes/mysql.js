@@ -87,16 +87,20 @@ api.post("/login", (req, res) => {
         const hashedPassword = result[0].password;
         const firstName = result[0].forename;
         const lastName = result[0].surname;
+        const hours = result[0].available;
         const orgName = result[0].org_name;
         const type = result[0].user_type;
         const id = result[0].id;
+        const info = result[0].concerns;
 
         if (await bcrypt.compare(password, hashedPassword)) {
           req.session.auth = true;
           req.session.firstName = firstName;
           req.session.lastName = lastName;
           req.session.email = email;
+          req.session.hours = hours;
           req.session.orgName = orgName;
+          req.session.info = info;
           req.session.type = type;
           req.session.cookieId = id;
           res.cookie(id, { maxAge: 30000, signed: true, httpOnly: true});
@@ -120,7 +124,11 @@ api.post("/login", (req, res) => {
 api.post("/profile", (req, res) => {
   if (req.session.auth) {
     res.status(200).send({ orgName: req.session.orgName, fname: req.session.firstName,
-     sname: req.session.lastName, email: req.session.email, type: req.session.type });
+     sname: req.session.lastName, email: req.session.email, hours: req.session.hours,
+     info: req.session.info, type: req.session.type });
+  }
+  else {
+    res.end(400);
   }
 });
 
@@ -323,11 +331,56 @@ api.post("/createBasicUser", async (req,res) => {
   });   // end of db.getConnection()
 });     // end of api.post()
 
+api.post("/orgList", async(req, res) => {
+  const type = 'org';
+
+  // prep mysql conn
+  db.getConnection(async (err, conn) => {
+    if (err) throw (err);
+
+    const dbSearch = "SELECT email, concerns, org_name FROM users WHERE user_type=?";
+    const query = mysql.format(dbSearch, [type]);
+
+    // connect to mysql get results
+    await conn.query (query, async (err, result) => {
+      if (err) throw (err);
+
+      console.log(">>> Query Success");
+      conn.release();
+
+      res.status(200).send(result);
+    }); // end of conn.query()
+  });   // end of db.getConnection()
+});     // end of /orgList
+
+api.post("/volList", async(req, res) => {
+  const type = 'vol';
+
+  // prep mysql conn
+  db.getConnection(async (err, conn) => {
+    if (err) throw (err);
+
+    const dbSearch =
+      "SELECT forename, surname, email, available FROM users WHERE user_type=?";
+    const query = mysql.format(dbSearch, [type]);
+
+    // connect to mysql get results
+    await conn.query (query, async (err, result) => {
+      if (err) throw (err);
+
+      console.log(">>> Query Success");
+      conn.release();
+
+      res.status(200).send(result);
+    }); // end of conn.query()
+  });   // end of db.getConnection()
+});     // end of /volList
+
 // EDIT users
 // In real life environment if user type changes, would force logout the user
 // We would also be using session stores instead of memorystore
 api.post("/editUser", async (req, res) => {
-  const email = req.body.hiddenEmail;
+  const email = req.body.hiddenEmail.trim();
 
   // set to null if that item is empty
   const orgName = req.body.editName.trim();
@@ -442,7 +495,120 @@ api.post("/editUser", async (req, res) => {
       }); // end of conn.query()
     });   // end of db.getConnection()
   }
-});       // end of api.post()
+});       // end of /editUser
+
+api.post('/updateUser', async (req, res) => {
+  // will be used to query the DB
+  const email = req.session.email;
+  const type = req.session.type;
+
+  // populate data to be updated; will not be updated if not changed
+  let firstName = req.body.fname.trim().charAt(0).toUpperCase() +
+    req.body.fname.slice(1).toLowerCase();
+  let lastName = req.body.sname.trim().charAt(0).toUpperCase() +
+    req.body.sname.slice(1).toLowerCase();
+  // will change from null if updated by user
+  let hours;
+  if (req.body.hours) {
+    hours = req.body.hours;
+  }
+  let orgName = req.body.orgName.trim();
+  let info = req.body.info.trim();
+
+  // certain usertypes cannot set certain data; example org user cannot set hours
+  if (type === 'org') {
+    firstName = null;
+    lastName = null;
+    hours = null;
+  }
+  else if (type === 'vol') {
+    orgName = null;
+    info = null;
+  }
+
+  // only update pass if it was edited
+  if (req.body.pass) {
+    const hashedPass = await bcrypt.hash(req.body.pass, 12);
+
+    db.getConnection(async (err, conn) => {
+      if (err) throw (err);
+  
+      const dbSearch =
+        "SELECT forename, surname, password, concerns, available, org_name FROM users WHERE email = ?";
+      const query = mysql.format(dbSearch, [email]);
+      const dbUpdate =
+        "UPDATE users SET forename=?, surname=?, password=?, concerns=?, available=?, org_name=? WHERE email=?";
+      const update = mysql.format(dbUpdate, [firstName, lastName, hashedPass, info,
+        hours, orgName, email]);
+  
+      await conn.query(query, async (err, result) => {
+        if (err) throw (err);
+
+        if (result.length === 0) {
+          conn.release();
+          console.log(`>>>${email} No such account`);
+          res.sendStatus(400);
+        }
+        else {
+          await conn.query(update, (err, result) => {
+            conn.release();
+            if (err) throw (err);
+  
+            console.log(`>>> ${email} account/password updated`);
+            // update session values
+            req.session.firstName = firstName;
+            req.session.lastName = lastName;
+            req.session.email = email;
+            req.session.hours = hours;
+            req.session.orgName = orgName;
+            req.session.info = info;
+            res.status(200).send({ message: `${email} account/password updated` });
+          });
+        }
+      }); // end of conn.query()
+    });   // end of db.getConnection()
+  }
+  // will update user if password is not changed
+  else {
+    db.getConnection(async (err, conn) => {
+      if (err) throw (err);
+  
+      const dbSearch =
+        "SELECT forename, surname, concerns, available, org_name FROM users WHERE email = ?";
+      const query = mysql.format(dbSearch, [email]);
+      const dbUpdate =
+        "UPDATE users SET forename=?, surname=?, concerns=?, available=?, org_name=? WHERE email=?";
+      const update = mysql.format(dbUpdate, [firstName, lastName, info, hours, orgName,
+        email]);
+  
+      await conn.query(query, async (err, result) => {
+        if (err) throw (err);
+
+        if (result.length === 0) {
+          conn.release();
+          console.log(`>>>${email} No such account`);
+          res.sendStatus(400);
+        }
+        else {
+          await conn.query(update, (err, result) => {
+            conn.release();
+            if (err) throw (err);
+
+            console.log(`>>> ${email} account updated`);
+            // update session info
+            req.session.firstName = firstName;
+            req.session.lastName = lastName;
+            req.session.email = email;
+            req.session.hours = hours;
+            req.session.orgName = orgName;
+            req.session.info = info;
+            res.status(200).send({ message: `${email} account updated` });
+          });
+        }
+      }); // end of conn.query()
+    });   // end of db.getConnection()
+  }
+});       // end of /updateUser
 
 // DELETE user via Admin Tools
 api.post("/deleteUser", async (req, res) => {
@@ -478,49 +644,6 @@ api.post("/deleteUser", async (req, res) => {
     }); // end of conn.query()
   });   // end of db.getConnection()
 });     // end of api.post()
-
-api.post("/orgList", async(req, res) => {
-  const type = 'org';
-
-  // prep mysql conn
-  db.getConnection(async (err, conn) => {
-    if (err) throw (err);
-
-    const dbSearch = "SELECT email, concerns, org_name FROM users WHERE user_type=?";
-    const query = mysql.format(dbSearch, [type]);
-
-    // connect to mysql get results
-    await conn.query (query, async (err, result) => {
-      if (err) throw (err);
-
-      console.log(">>> Query Success");
-
-      res.status(200).send(result);
-    }); // end of conn.query()
-  });   // end of db.getConnection()
-});     // end of /orgList
-
-api.post("/volList", async(req, res) => {
-  const type = 'vol';
-
-  // prep mysql conn
-  db.getConnection(async (err, conn) => {
-    if (err) throw (err);
-
-    const dbSearch =
-      "SELECT forename, surname, email, available FROM users WHERE user_type=?";
-    const query = mysql.format(dbSearch, [type]);
-
-    // connect to mysql get results
-    await conn.query (query, async (err, result) => {
-      if (err) throw (err);
-
-      console.log(">>> Query Success");
-
-      res.status(200).send(result);
-    }); // end of conn.query()
-  });   // end of db.getConnection()
-});     // end of /volList
 
 // delete your own user
 api.post("/delUser", async (req, res) => {
@@ -566,5 +689,37 @@ api.post("/delUser", async (req, res) => {
     }); // end of conn.query()
   });   // end of db.getConnection()
 });     // end of /delUser
+
+api.post("/resetPass", async (req, res) => {
+  const email = req.body.email.trim();
+
+  // prep db call
+  db.getConnection(async (err, conn) => {
+    if (err) throw (err);
+
+    const dbSearch = "SELECT email FROM users WHERE email = ?";
+    const query = mysql.format(dbSearch, [email]);
+
+    // connect to DB to get results
+    await conn.query (query, async (err, result) => {
+      if (err) throw (err);
+
+      if (result.length === 0) {
+        conn.release();
+        console.log(`${email} does not exist`);
+        res.status(404).send({ message: `Something went wrong.` });
+      }
+      else {
+        conn.release();
+        console.log(`${email} password reset sent`)
+        res.status(200).send({ message: `Password reset sent, check Inbox` });
+
+        // generate a token
+        const token = jwt.sign({ userID: user._id }), process.env.JWT_SECRET, { expiresIn: '1h' });
+      }
+
+    }); // end of conn.query()
+  });   // end of db.getConnection()
+});     // end of /resetPass
 
 module.exports = api;

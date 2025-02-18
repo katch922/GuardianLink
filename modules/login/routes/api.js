@@ -22,7 +22,7 @@ api.get("/profile", function(req, res) {
     res.sendFile(path.join(homeDir, '/html/profile.html'));
   }
   else {
-    //res.redirect('/login');
+    // give error message
     res.status(401).sendFile(path.join(homeDir, '/html/error.html'));
   }
 });
@@ -85,6 +85,10 @@ api.get("/volList", function(req, res) {
   else {
     res.status(403).end();
   }
+});
+
+api.get('/forgot', function(req, res) {
+  res.sendFile(path.join(homeDir, '/html/forgot.html'));
 });
 
 module.exports = api;

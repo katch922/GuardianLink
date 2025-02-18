@@ -29,12 +29,17 @@ xhr.onload = () => {
         z.innerHTML = jsonResponse[i].concerns;
         // set right margin to 0
         z.style["padding-right"] = "0";
-        z.style["width"] = "60%";
+        z.style["width"] = "33%";
         if (i === 0) {
           x.style["padding-top"] = '25px';
           y.style["padding-top"] = '25px';
           z.style["padding-top"] = '25px';
         }
+        var btn = tr.insertCell();
+        let aTag = document.createElement('a');
+        aTag.href = `mailto:${jsonResponse[i].email}`;
+        aTag.innerHTML = 'Send Email';
+        btn.appendChild(aTag);
       }
     }
   }

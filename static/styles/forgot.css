@@ -147,7 +147,7 @@ Overall flex container with smaller boxes inside */
 
 .labels {
     color: #F9627D;
-    font-size: 2vh;
+    font-size: 2.2vh;
     font-weight: bold;
     margin-top: 5px;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
@@ -161,11 +161,6 @@ Overall flex container with smaller boxes inside */
     background:#CDDDDD;
     ;
     margin-top: 10px;
-}
-
-.error {
-    color: #F9627D;
-    font-size: 1.5vh;
 }
 
 /* Mobile responsive weblayout */
@@ -183,33 +178,16 @@ Overall flex container with smaller boxes inside */
 End of Default Styling
 ### END ### */
 
-img {
-    width: 500px;
-    height: 300px;
+/* title page color and styling */
+h2 {
+    color: #5F7470;
+    font-size: 3vh;
+    margin: 25px;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
-a {
-    text-decoration: none;
-}
-
-#msg {
+#error {
+    background: #F9627D;
     color: #002642;
-    background: #F9627D;
     font-size: 1.5vh;
-}
-
-#passReset {
-    font-size: 1.5vh;
-    background: #F9627D;
-}
-#passRest:hover {
-    color: #fff8f0;
-    background: #F9627D80;
-}
-
-/* screen gets smaller than that adjust these settings for submit button */
-@media only screen and (max-width: 800px) {
-    #forgot {
-        margin: 15px 40px 0 0;
-    }
 }

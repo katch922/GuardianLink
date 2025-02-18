@@ -153,14 +153,3 @@ function typeIsValid(type) {
       return false;
   }
 }
-
-// method to validate name
-function nameIsValid(name) {
-  const regex = /^[a-zA-Z][a-zA-Z]{1,19}$/;
-
-  if (regex.test(name)) {
-      return true;
-  } else {
-      return false;
-  }
-}

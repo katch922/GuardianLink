@@ -7,8 +7,8 @@
     <!-- make mobile friendly -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="/styles/error.css">
-    <script defer src="/src/error.js"></script>
+    <link rel="stylesheet" href="/styles/forgot.css">
+    <script defer src="/src/resetPass.js"></script>
   </head>
 
 <body class="body">
@@ -33,10 +33,25 @@
   </nav>
 
   <div class="flex-container">
+    <h2>Reset Password</h2>
+  </div>
+
+  <div class="flex-container">
     <div class="flex-item-left">
-      <h1 id="error"></h1>
+      <label for="email" class="labels">Provide email account for reset:</label>
     </div>
-    <div class="flex-item-right" id="login"></div>
+    <div class="flex-item-right">
+      <input type="text" class="inputs" id="email" required>
+    </div>
+  </div>
+
+  <div class="flex-container">
+    <div class="flex-item-left">
+      <input type="button" class="button" value="SUBMIT">
+    </div>
+    <div class="flex-item-right">
+      <span id="error"></span>
+    </div>
   </div>
 
 </body>

@@ -213,8 +213,8 @@ End of Default Styling
 ### END ### */
 
 #account {
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
 }
 
 h3 {
@@ -242,4 +242,18 @@ h3 {
 
 #warn {
     margin-left: 20px;
+}
+
+#feedback {
+    color: #F9627D;
+    font-size: 1.5vh;
+}
+
+#user-info {
+    margin: 0;
+}
+
+#user-details {
+    background: #CDDDDD;
+    padding: 25px 0 0 25px;
 }

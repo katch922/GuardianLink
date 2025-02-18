@@ -1,30 +1,34 @@
 // Will populate user info on profile page
 // creaete objects
-const orgName = document.getElementById("orgName");
-const firstName = document.getElementById("fname");
-const lastName = document.getElementById("sname");
-const email = document.getElementById("email");
+const orgName = document.querySelector("#orgName");
+const firstName = document.querySelector("#fname");
+const lastName = document.querySelector("#sname");
+const email = document.querySelector("#email");
 const button = document.createElement("button");
+const hours = document.querySelector("#hours");
+const orgInfo = document.querySelector("#info");
 
 // create obj
 const xhr = new XMLHttpRequest();
 
 // make the connection
-let url = 'http://localhost:3000/profile';
+const url = 'http://localhost:3000/profile';
 xhr.open("POST", url, true);
 xhr.send();
 xhr.responseText = "json";
-xhr.onload = () => {
+xhr.onreadystatechange = () => {
   if (xhr.readyState == 4 && xhr.status == 200) {
     // get reponse and parse it to a new var
     let jsonResponse = JSON.parse(xhr.response);
     const type = jsonResponse.type;
 
     // add to Profile Page elements
-    orgName.textContent = jsonResponse.orgName;
-    firstName.textContent = jsonResponse.fname;
-    lastName.textContent = jsonResponse.sname;
-    email.textContent = jsonResponse.email;
+    orgName.value = jsonResponse.orgName;
+    firstName.value = jsonResponse.fname;
+    lastName.value = jsonResponse.sname;
+    email.value = jsonResponse.email;
+    hours.value = jsonResponse.hours;
+    orgInfo.value = jsonResponse.info;
     if (type === "admin") {
       // user is admin, add link to open admin page
       //input.type = "button";
@@ -36,19 +40,20 @@ xhr.onload = () => {
     else if (type === 'vol') {
       // use is volunteer, display link for Organization List
       button.className = 'button';
-      button.textContent = 'Org List';
+      button.textContent = 'ORG LIST';
       button.onclick = function() { window.location.href='/orgList' };
       document.getElementById("tools").appendChild(button);
     }
     else if (type === 'org') {
       // use is volunteer, display link for Organization List
       button.className = 'button';
-      button.textContent = 'Vol List';
+      button.textContent = 'VOL LIST';
       button.onclick = function() { window.location.href='/volList' };
       document.getElementById("tools").appendChild(button);
     }
   }
-  else {
+  else if (xhr.status === 400) {
     console.log(`"Error:" ${xhr.status}`);
+    document.querySelector("#feedback").textContent = "Something went wrong";
   }
 };

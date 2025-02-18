@@ -1,9 +1,9 @@
-// populate org list
+// populate chat messages
 // make the connection
 const xhr = new XMLHttpRequest();
 
 // make the connection
-const url = 'http://localhost:3000/volList';
+const url = 'http://localhost:3000/chat';
 
 xhr.open("POST", url, true);
 xhr.send();
@@ -15,36 +15,26 @@ xhr.onload = () => {
 
     const table = document.querySelector('table');
 
-    // for the amount of organizations; display data to volunteers
+    // display all messages from user; allow to delete messages
     for (let i = 0; i < jsonResponse.length; i++) {
       // create a new row
       let tr = table.insertRow();
       for (let j = 0; j < 1; j++) {
-        // populate the data
-        var fname = tr.insertCell();
-        fname.innerHTML = jsonResponse[i].forename;
-        var lname = tr.insertCell();
-        lname.innerHTML = jsonResponse[i].surname;
+        // populate with messages
         var email = tr.insertCell();
-        email.innerHTML = jsonResponse[i].email;
-        var hours = tr.insertCell();
-        hours.innerHTML = jsonResponse[i].available;
+        email.innerHTML = jsonResponse[i].email_from;
+        var msg = tr.insertCell();
+        msg.innerHTML = jsonResponse[i].message;
         // set right margin to 0
-        hours.style["padding-right"] = "0";
-        //hours.style["width"] = "60%";
+        msg.style["padding-right"] = "0";
+
+        // first row no padding on top
         if (i === 0) {
           fname.style["padding-top"] = '25px';
           lname.style["padding-top"] = '25px';
           email.style["padding-top"] = '25px';
           hours.style["padding-top"] = '25px';
         }
-
-        // create mailto button
-        var btn = tr.insertCell();
-        let aTag = document.createElement('a');
-        aTag.href = `mailto:${jsonResponse[i].email}`;
-        aTag.innerHTML = 'Send Email';
-        btn.appendChild(aTag);
       }
     }
   }
