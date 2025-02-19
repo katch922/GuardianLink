@@ -163,7 +163,7 @@ Overall flex container with smaller boxes inside */
     margin-top: 10px;
 }
 
-#error {
+#error,#delMsgNotify {
     color: #002642;
     background: #F9627D;
     font-size: 1.5vh;
@@ -229,4 +229,14 @@ textarea {
     height: 200px;
     width: 100%;
     resize: none;
+}
+
+button[name="delBtn"] {
+    font-size: 2vh;
+    background: #F9627D;
+    margin: 0;
+}
+button[name="delBtn"]:hover {
+    color: #fff8f0;
+    background: #F9627D80;
 }

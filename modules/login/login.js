@@ -61,4 +61,6 @@ app.post('/updateUser', dbRoutes);
 app.post("/orgList", dbRoutes);
 app.post('/volList', dbRoutes);
 app.post('/sendMsg', dbRoutes);
+app.post('/fetchMsg', dbRoutes);
+app.post('/delMsg', dbRoutes);
 app.post('/resetPass', dbRoutes);

@@ -668,7 +668,7 @@ api.post("/delUser", async (req, res) => {
 
       if (result.length === 0) {
         conn.release();
-        console.log(`>>>${email} No such account`);
+        console.log(`>>> ${email} No such account`);
         res.status(400).send({ message: `${email} does not exist` });
       }
       // do not delete if only one admin user
@@ -699,24 +699,89 @@ api.post("/sendMsg", async (req, res) => {
   const emailTo = req.body.email.trim();
   const msg = req.body.msg.trim();
 
-  // prep connection to DB
-  db.getConnection(async (err, conn) => {
-    conn.release(); // close mysql connection
-    if (err) throw (err);
-
-    const dbInsert =
-      "INSERT INTO communication(email_from, email_to, message) VALUES(?, ?, ?)";
-    const insert = mysql.format(dbInsert, [emailFrom, emailTo, msg]);
-
-    // connect to mysql and make the changes
-    await conn.query(insert, (err, result) => {
+  if (!msg) {
+    res.status(400).send({ message: `Message cannot be empty` });
+  }
+  else {
+    // prep connection to DB
+    db.getConnection(async (err, conn) => {
       if (err) throw (err);
 
-      console.log(`>>> Message sent to ${emailTo}`);
-      res.status(201).send({ message: `Message sent to ${emailTo}` });
+      const dbInsert =
+        "INSERT INTO communication(email_from, email_to, message) VALUES(?, ?, ?)";
+      const insert = mysql.format(dbInsert, [emailFrom, emailTo, msg]);
+
+      // connect to mysql and make the changes
+      await conn.query(insert, (err, result) => {
+        conn.release(); // close mysql connection
+        if (err) throw (err);
+
+        console.log(`>>> Message sent to ${emailTo}`);
+        res.status(201).send({ message: `Message sent to ${emailTo}` });
+      }); // end of conn.query()
+    });   // end of db.getConnection()
+  }
+});     // end of /sendMsg
+
+// fetch messages for user
+api.post('/fetchMsg', async (req, res) => {
+  const email = req.session.email.trim();
+
+  // prep db connection
+  db.getConnection(async (err, conn) => {
+    if (err) throw (err);
+
+    const dbSearch = "SELECT * FROM communication WHERE email_to = ?";
+    const query = mysql.format(dbSearch, [email]);
+
+    // connect to mysql get results
+    await conn.query(query, async (err, result) => {
+      if (err) throw (err);
+
+      console.log(">>> Query Success");
+      conn.release();
+
+      res.status(200).send(result);
     }); // end of conn.query()
   });   // end of db.getConnection()
-});     // end of /sendMsg
+});     // end of /fetchMsg
+
+// delete message from users box
+api.post('/delMsg', async (req, res) => {
+  const msgToDel = req.body.msgToDel;
+
+  // prep mysql connection
+  db.getConnection(async (err, conn) => {
+    if (err) throw (err);
+
+    const dbSearch = "SELECT id FROM communication WHERE id = ?";
+    const query = mysql.format(dbSearch, [msgToDel]);
+
+    const dbDelete = "DELETE FROM communication WHERE id = ?";
+    const delMsg = mysql.format(dbDelete, [msgToDel]);
+
+    // connect to DB to del msg
+    await conn.query(query, async (err, result) => {
+      if (err) throw (err);
+
+      if (result.length === 0) {
+        conn.release();
+        console.log(`>>> #${msgToDel} message does not exist`);
+        res.status(400).send({ message: `Message does not exist` });
+      }
+      else {
+        await conn.query (delMsg, (err) => {
+          conn.release();
+
+          if (err) throw (err);
+
+          console.log(`>>> #${msgToDel} message deleted`);
+          res.status(200).send({ message: `Message deleted` });
+        });
+      }
+    }); // end of conn.query()
+  });   // end of db.getConnection()
+});     // end of /delMsg
 
 // not a great way to setup password reset, not a very secure way.
 // real life would want to send a reset email link and let the user reset their password
