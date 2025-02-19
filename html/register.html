@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Register</title>
+    <meta name="author" content="R.K.">
+    <meta charset="utf-8">
+    <!-- make mobile friendly -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/styles/register.css">
+    <script defer src="/src/validation.js"></script>
+    <script defer src="/src/register.js"></script>
+  </head>
+
+<body class="body">
+
+  <!-- Navigation Bars -->
+  <!-- Login Bar -->
+  <nav class="logbar">
+    <ul>
+      <li><a id="loginBtn" href='/login' transition='Sign In'>Sign In</a></li>
+      <li><a href='/logout' transition='Sign Out'>Sign Out</a></li>
+      <li><a href='/register' transition='Register'>Register</a></li>
+    </ul>
+  </nav>
+
+  <!-- Nav Bar -->
+  <nav class="navbar">
+    <ul>
+      <li><a href='/' transition='Home'>Home</a></li>
+      <li><a href='/about' transition='About'>About</a></li>
+      <li><a href='/profile' transition='Profile'>Profile</a></li>
+      <li><a href='/contact' transition='Contact'>Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="flex-container">
+    <h1>Make a Difference with GuardianLink</h1>
+  </div>
+
+  <!-- Org registration form -->
+  <div class="outer">
+
+    <div class="flex-container">
+      <h2>NGO Registration Form</h2>
+    </div>
+
+        <div class="flex-container">
+          <div class="flex-item-left">
+            <label for="orgName" class="labels">Organization Name</label>
+          </div>
+          <div class="flex-item-right">
+            <input type="text" class="inputs" id="orgName" name="orgName" maxlength="100"
+              placeholder="Organization Name.." required>
+            <span class="error">*</span>
+          </div>
+        </div>
+
+        <div class="flex-container">
+          <div class="flex-item-left">
+            <label for="orgEmail" class="labels">Email</label>
+          </div>
+          <div class="flex-item-right">
+            <input type="text" class="inputs" id="orgEmail" name="orgEmail"
+              placeholder="Organization Email.." required>
+            <span class="error">*</span>
+          </div>
+        </div>
+
+        <div class="flex-container">
+          <div class="flex-item-left">
+            <label for="concern" class="labels">Areas of Concern</label>
+          </div>
+          <div class="flex-item-right">
+            <textarea class="inputs" id="concern" name="concern"
+              placeholder="Write your concerns here.." style="height:200px"
+              maxlength="2000" required></textarea>
+            <span class="error">*</span>
+          </div>
+        </div>
+
+        <div class="flex-container">
+          <div class="flex-item-left">
+            <label for="orgPass1" class="labels">New Password</label>
+          </div>
+          <div class="flex-item-right">
+            <input type="password" class="inputs" id="orgPass1" name="orgPass1"
+              placeholder="Password.." pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+              title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+              required>
+            <span class="error">*</span>
+          </div>
+        </div>
+
+        <div class="flex-container">
+          <div class="flex-item-left">
+            <label for="orgPass2" class="labels">Confirm Password</label>
+          </div>
+          <div class="flex-item-right">
+            <input type="password" class="inputs" id="orgPass2" name="pass2"
+              placeholder="Confirm Password.."
+              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+              required>
+            <span class="error">*</span>
+          </div>
+        </div>
+
+        <div class="flex-container">
+          <span id="orgNotify"></span>
+        </div>
+
+        <div class="flex-container">
+          <div class="flex-item-left">
+            <input type="submit" class="button" id="orgSubmit" value="CREATE">
+          </div>
+          <div class="flex-item-right">
+            <p><span class="error">* required fields</span></p>
+          </div>
+        </div>
+
+  </div>
+  <br>
+
+  <!-- Volunteer registration form -->
+  <div class="outer">
+
+    <div class="flex-container">
+      <h2>Volunteer Registration Form</h2>
+    </div>
+    
+    <form action="/createVolUser" method="post" enctype="multipart/form-data">
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="fname" class="labels">First Name</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="text" class="inputs" id="fname" name="fname"
+            placeholder="First Name.." required>
+          <span class="error">*</span>
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="sname" class="labels">Last Name</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="text" class="inputs" id="sname" name="sname"
+            placeholder="Last Name.." required>
+          <span class="error">*</span>
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="volEmail" class="labels">Email</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="text" class="inputs" id="volEmail" name="volEmail" placeholder="Email.."
+            required>
+          <span class="error">*</span>
+        </div>
+      </div>
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="hours" class="labels">Hours Available Per Week</label>
+          <!-- will let user choose from 0 to 168 for id="hours" Hours per week -->
+          <script defer src="/src/hours.js"></script>
+        </div>
+        <div class="flex-item-right">
+          <select class="inputs" id="hours" name="hours" required></select>
+          <span class="error">*</span>
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <p>Background Check</p>
+        </div>
+        <div class="flex-item-right">
+          <input type="radio" id="yes" name="crime" value="yes" required>Yes
+          <input type="radio" id="no" name="crime" value="no" checked>No
+          <span class="error">*</span>
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="resume" class="labels">Resume</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="file" class="inputs" id="resume" name="resume"
+            accept=".doc,.docx,.pdf,.odt">
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="volPass1" class="labels">New Password</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="password" class="inputs" id="volPass1" name="volPass1"
+            placeholder="Password.." pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+            title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+            required>
+          <span class="error">*</span>
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="volPass2" class="labels">Confirm Password</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="password" class="inputs" id="volPass2" name="pass2"
+            placeholder="Confirm Password.."
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+            required>
+          <span class="error">*</span>
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <span id="volNotify"></span>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <input type="submit" class="button" id="volSubmit" value="CREATE">
+        </div>
+        <div class="flex-item-right">
+          <p><span class="error">* required fields</span></p>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+</body>
+
+<!-- Footer -->
+<footer class="footer">
+  Copyright &copy 2025 GuardianLink. Developed by R.K.
+</footer>
+</html>

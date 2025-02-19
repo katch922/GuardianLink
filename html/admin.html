@@ -1,0 +1,253 @@
+<html lang="en">
+  <head>
+    <title>Admin Tools</title>
+    <meta name="author" content="R.K.">
+    <meta charset="utf-8">
+    <!-- make mobile friendly -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/styles/admin.css">
+    <script defer src="/src/adminValidateForm.js"></script>
+    <script async src="/src/queryUsers.js"></script>
+    <script defer src="/src/adminAjax.js"></script>
+    <!-- Will populate user info page -->
+  </head>
+
+<body class="body">
+
+  <!-- Navigation Bars -->
+  <!-- Login Bar -->
+  <nav class="logbar">
+    <ul>
+      <li><a href='/login' transition='Sign In' hidden>Sign In</a></li>
+      <li><a href='/logout' transition='Sign Out'>Sign Out</a></li>
+      <li><a href='/register' transition='Register'>Register</a></li>
+    </ul>
+  </nav>
+  <!-- Nav Bar -->
+  <nav class="navbar">
+    <ul>
+      <li><a href='/' transition='Home'>Home</a></li>
+      <li><a href='/about' transition='About'>About</a></li>
+      <li><a href='/profile' transition='Profile'>Profile</a></li>
+      <li><a href='/contact' transition='Contact'>Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="flex-container">
+    <h1>Admin Tools</h1>
+  </div>
+
+  <div class="outer">
+    <!-- Create basic user -->
+    <div class="flex-container">
+      <h2>Create User</h2>
+    </div>
+
+    <div class="flex-container">
+      <div class="flex-item-left">
+        <label for="fname" class="labels">First Name</label>
+      </div>
+      <div class="flex-item-right">
+        <input type="text" class="inputs" id="fname" name="fname">
+      </div>
+    </div>
+
+    <div class="flex-container">
+      <div class="flex-item-left">
+        <label for="sname" class="labels">Last Name</label>
+      </div>
+      <div class="flex-item-right">
+        <input type="text" class="inputs" id="sname" name="sname">
+      </div>
+    </div>
+
+    <div class="flex-container">
+      <div class="flex-item-left">
+        <label for="orgName" class="labels">Organization Name</label>
+      </div>
+      <div class="flex-item-right">
+        <input type="text" class="inputs" id="orgName" name="orgName">
+      </div>
+    </div>
+
+    <div class="flex-container">
+      <div class="flex-item-left">
+        <label for="email" class="labels">Email</label>
+      </div>
+      <div class="flex-item-right">
+        <input type="text" class="inputs" id="email" name="email" required>
+        <span class="error">*</span>
+      </div>
+    </div>
+
+    <div class="flex-container">
+      <div class="flex-item-left">
+        <label for="pass" class="labels">Password</label>
+      </div>
+      <div class="flex-item-right">
+        <input type="password" class="inputs" id="pass" name="pass"
+          pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+          required>
+        <span class="error">*</span>
+      </div>
+    </div>
+
+    <div class="flex-container">
+      <div class="flex-item-left">
+        <label for="type" class="labels">User Type</label>
+      </div>
+      <div class="flex-item-right">
+        <input type="text" class="inputs" id="type" name="type" required>
+        <span class="error">*</span>
+      </div>
+    </div>
+
+    <div class="flex-container">
+      <span id="notify"></span>
+    </div>
+
+    <div class="flex-container">
+      <div class="flex-item-left">
+        <input type="submit" class="button" id="basicSubmit" value="CREATE">
+      </div>
+      <div class="flex-item-right">
+        <p><span class="error">* required fields</span></p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="outer">
+    <form action="/deleteUser" method="post">
+      <!-- Edit user; Change pass & type -->
+      <div class="flex-container">
+        <h2>Edit User</h2>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="users" class="labels">Email</label>
+        </div>
+        <div class="flex-item-right">
+          <select class="inputs" id="users" name="users" required></select>
+        </div>
+      </div>
+
+      <div class="flex-container" id="del-container">
+        <input type="submit" class="button" id="delBtn" value="DELETE">
+        <p><span class="error" id="warn">Warning, this will delete the user!</span></p>
+        <p>Mouse over selection box will clear the page.</p>
+      </div>
+
+    </form>
+
+    <form action="/editUser" method="post">
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="hiddenEmail" class="labels" hidden>Email</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="text" class="inputs" id="hiddenEmail" name="hiddenEmail" hidden>
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="editName" class="labels">Organization Name</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="text" class="inputs" id="editName" name="editName">
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="editFname" class="labels">First Name</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="text" class="inputs" id="editFname" name="editFname">
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="editSname" class="labels">Last Name</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="text" class="inputs" id="editSname" name="editSname">
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="editPass" class="labels">Password</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="password" class="inputs" id="editPass" name="editPass"
+            placeholder="Type new password.."
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="editType" class="labels">User Type</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="text" class="inputs" id="editType" name="editType">
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="editInfo" class="labels">Organization Concerns</label>
+        </div>
+        <div class="flex-item-right">
+          <textarea class="inputs" id="editInfo" name="editInfo" style="height:200px"
+            maxlength="2000"></textarea>
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="editHours" class="labels">Volunteer Hours Per Week</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="text" class="inputs" id="editHours" name="editHours">
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="crime" class="labels">Background Check</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="text" class="inputs" id="crime" name="crime">
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <div class="flex-item-left">
+          <label for="resume" class="labels">Resume Submitted</label>
+        </div>
+        <div class="flex-item-right">
+          <input type="text" class="inputs" id="resume" name="resume">
+        </div>
+      </div>
+
+      <div class="flex-container">
+        <input type="submit" class="button" id="updateUser" value="UPDATE">
+      </div>
+
+    </form>
+  </div>
+
+</body>
+
+<!-- Footer -->
+<footer class="footer">
+  Copyright &copy 2025 GuardianLink. Developed by R.K.
+</footer>
+</html>

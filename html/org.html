@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Organization List</title>
+    <meta name="author" content="R.K.">
+    <meta charset="utf-8">
+    <!-- make mobile friendly -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/styles/userList.css">
+    <script async src="/src/orgList.js"></script>
+  </head>
+
+<body class="body">
+
+  <!-- Navigation Bars -->
+  <!-- Login Bar -->
+  <nav class="logbar">
+    <ul>
+      <li><a href='/logout' transition='Sign Out'>Sign Out</a></li>
+      <li><a href='/register' transition='Register'>Register</a></li>
+    </ul>
+  </nav>
+
+  <!-- Nav Bar -->
+  <nav class="navbar">
+    <ul>
+      <li><a href='/' transition='Home'>Home</a></li>
+      <li><a href='/about' transition='About'>About</a></li>
+      <li><a href='/profile' transition='Profile'>Profile</a></li>
+      <li><a href='/contact' transition='Contact'>Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="flex-container">
+    <h1>List of Organizations</h1>
+  </div>
+
+  <div class="flex-container">
+    <table class="table" id="list">
+
+        <tr>
+          <th>Organization Name</th>
+          <th>Email</th>
+          <th>Concerns</th>
+          <th>Get In Touch</th>
+        </tr>
+
+    </table>
+  </div>
+
+  <div class="flex-container">
+    <h1>Communication Platform</h1>
+  </div>
+
+  <div class="flex-container">
+    <div class="flex-item-left">
+      <label class="labels"></label>
+    </div>
+    <div class="flex-item-right">
+      <textarea class="inputs" placeholder="Message to user.." maxlength="1000" required></textarea>
+    </div>
+  </div>
+
+  <div class="flex-container">
+    <div class="flex-item-left">
+      <input type="button" class="button" id="sendMsg" value="SEND">
+    </div>
+    <div class="flex-item-right">
+      <span id="error"></span>
+    </div>
+  </div>
+
+  <div class="flex-container">
+    <h2>Messages</h2>
+  </div>
+
+  <!-- List of messages -->
+  <div class="flex-container">
+    <table class="table" id="messages">
+
+      <tr>
+        <th>Email From</th>
+        <th>Message</th>
+        <th>Action</th>
+      </tr>
+
+    </table>
+  </div>
+
+  <div class="flex-container">
+    <span id="delMsgNotify"></span>
+  </div>
+
+</body>
+
+<!-- Footer -->
+<footer class="footer">
+  Copyright &copy 2025 GuardianLink. Developed by R.K.
+</footer>
+</html>

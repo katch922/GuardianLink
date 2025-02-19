@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Contact Us</title>
+    <meta name="author" content="R.K.">
+    <meta charset="utf-8">
+    <!-- make mobile friendly -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/styles/contact.css">
+  </head>
+
+<body class="body">
+
+  <!-- Navigation Bars -->
+  <!-- Login Bar -->
+  <nav class="logbar">
+    <ul>
+      <li><a id="loginBtn" href='/login' transition='Sign In'>Sign In</a></li>
+      <li><a href='/logout' transition='Sign Out'>Sign Out</a></li>
+      <li><a href='/register' transition='Register'>Register</a></li>
+    </ul>
+  </nav>
+  <!-- Nav Bar -->
+  <nav class="navbar">
+    <ul>
+      <li><a href='/' transition='Home'>Home</a></li>
+      <li><a href='/about' transition='About'>About</a></li>
+      <li><a href='/profile' transition='Profile'>Profile</a></li>
+      <li><a href='/contact' transition='Contact'>Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="flex-container">
+    <!-- Title of the page -->
+    <h1>Contact Us</h1>
+  </div>
+
+  <div class="outer">
+  <!-- Contact form -->
+  <form action="" method="POST">
+
+    <div class="flex-container">
+      <div class="flex-item-left">
+        <label for="name" class="labels">Full Name</label>
+      </div>
+      <div class="flex-item-right">
+        <input type="text" class="inputs" id="name" name="name" placeholder="Full Name.." required>
+        <span class="error">*</span>
+      </div>
+    </div>
+
+    <div class="flex-container">
+      <div class="flex-item-left">
+        <label for="email" class="labels">Email</label>
+      </div>
+      <div class="flex-item-right">
+        <input type="text" class="inputs" id="email" name="email" placeholder="Email.." required>
+        <span class="error">*</span>
+      </div>
+    </div>
+
+    <div class="flex-container">
+      <div class="flex-item-left">
+        <label for="info" class="labels">Brief Description</label>
+      </div>
+      <div class="flex-item-right">
+        <textarea class="inputs" id="info" name="info" placeholder="How can we help you.."
+          style="height:200px" maxlength="1000" required></textarea>
+        <span class="error">*</span>
+      </div>
+    </div>
+
+    <div class="flex-container" id="submit">
+      <div class="flex-item-left" id="req-left">
+        <input type="submit" class="button" name="submit" value="SUBMIT">
+      </div>
+      <div class="flex-item-right" id="req-right">
+        <p><span class="error">* required fields</span></p>
+      </div>
+
+  </form>
+  </div>
+
+</body>
+
+<!-- Footer -->
+<footer class="footer">
+  Copyright &copy 2025 GuardianLink. Developed by R.K.
+</footer>
+</html>
