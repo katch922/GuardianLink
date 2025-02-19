@@ -47,6 +47,9 @@ const DB_PASSWORD = process.env.DB_PASSWORD;
 const DB_DATABASE = process.env.DB_DATABASE;
 const DB_PORT = process.env.DB_PORT;
 
+// admins email for password reset
+const EMAIL = process.env.EMAIL;
+
 // create pool for mysql connections
 const db = mysql.createPool({
   connectionLimit: 100,
@@ -365,7 +368,7 @@ api.post("/volList", async(req, res) => {
     const query = mysql.format(dbSearch, [type]);
 
     // connect to mysql get results
-    await conn.query (query, async (err, result) => {
+    await conn.query(query, async (err, result) => {
       if (err) throw (err);
 
       console.log(">>> Query Success");
@@ -690,18 +693,47 @@ api.post("/delUser", async (req, res) => {
   });   // end of db.getConnection()
 });     // end of /delUser
 
+// messaging app, will use mysql DB, keeping it simple for this project
+api.post("/sendMsg", async (req, res) => {
+  const emailFrom = req.session.email.trim();
+  const emailTo = req.body.email.trim();
+  const msg = req.body.msg.trim();
+
+  // prep connection to DB
+  db.getConnection(async (err, conn) => {
+    conn.release(); // close mysql connection
+    if (err) throw (err);
+
+    const dbInsert =
+      "INSERT INTO communication(email_from, email_to, message) VALUES(?, ?, ?)";
+    const insert = mysql.format(dbInsert, [emailFrom, emailTo, msg]);
+
+    // connect to mysql and make the changes
+    await conn.query(insert, (err, result) => {
+      if (err) throw (err);
+
+      console.log(`>>> Message sent to ${emailTo}`);
+      res.status(201).send({ message: `Message sent to ${emailTo}` });
+    }); // end of conn.query()
+  });   // end of db.getConnection()
+});     // end of /sendMsg
+
+// not a great way to setup password reset, not a very secure way.
+// real life would want to send a reset email link and let the user reset their password
+// while the email token is valid
 api.post("/resetPass", async (req, res) => {
   const email = req.body.email.trim();
+  const msg = `Password reset for ${email}`;
 
   // prep db call
   db.getConnection(async (err, conn) => {
     if (err) throw (err);
 
-    const dbSearch = "SELECT email FROM users WHERE email = ?";
+    const dbSearch = "SELECT email, id FROM users WHERE email = ?";
     const query = mysql.format(dbSearch, [email]);
 
     // connect to DB to get results
-    await conn.query (query, async (err, result) => {
+    await conn.query(query, async (err, result) => {
       if (err) throw (err);
 
       if (result.length === 0) {
@@ -712,12 +744,23 @@ api.post("/resetPass", async (req, res) => {
       else {
         conn.release();
         console.log(`${email} password reset sent`)
-        res.status(200).send({ message: `Password reset sent, check Inbox` });
+        res.status(200).send({ message: `Password reset sent to admin` });
 
-        // generate a token
-        const token = jwt.sign({ userID: user._id }), process.env.JWT_SECRET, { expiresIn: '1h' });
+        // save message to DB, the admin will reset password
+        // prep mySQL connection
+        db.getConnection(async (err, conn) => {
+          if (err) throw (err);
+
+          const dbMsg =
+            "UPDATE communication SET email_from=?, email_to=?, message=? WHERE email_from=?";
+          const saveMsg = mysql.format(dbMsg, [email, EMAIL, msg, email]);
+
+          // connect to DB and save message
+          await conn.query(saveMsg, async (err, result) => {
+
+          }); // end of conn.query()
+        });   // end of db.getConnection()
       }
-
     }); // end of conn.query()
   });   // end of db.getConnection()
 });     // end of /resetPass

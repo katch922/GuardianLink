@@ -19,6 +19,7 @@ xhr.onload = () => {
     for (let i = 0; i < jsonResponse.length; i++) {
       // create a new row
       let tr = table.insertRow();
+
       for (let j = 0; j < 1; j++) {
         // populate the data
         var fname = tr.insertCell();
@@ -29,26 +30,67 @@ xhr.onload = () => {
         email.innerHTML = jsonResponse[i].email;
         var hours = tr.insertCell();
         hours.innerHTML = jsonResponse[i].available;
-        // set right margin to 0
-        hours.style["padding-right"] = "0";
-        //hours.style["width"] = "60%";
-        if (i === 0) {
-          fname.style["padding-top"] = '25px';
-          lname.style["padding-top"] = '25px';
-          email.style["padding-top"] = '25px';
-          hours.style["padding-top"] = '25px';
-        }
 
-        // create mailto button
+        // create button for contact
         var btn = tr.insertCell();
-        let aTag = document.createElement('a');
-        aTag.href = `mailto:${jsonResponse[i].email}`;
-        aTag.innerHTML = 'Send Email';
-        btn.appendChild(aTag);
+        let msgBtn = document.createElement('button');
+        msgBtn.className = 'button';
+        // set id to email address so we can use for messaging
+        msgBtn.id = `${jsonResponse[i].email}`;
+        msgBtn.setAttribute("name", "contactBtn");
+        msgBtn.textContent = 'Contact';
+        btn.appendChild(msgBtn);
       }
     }
   }
   else {
     console.log(`"Error:" ${xhr.status}`);
   }
+
+  // get all contact buttons and add to array
+  const contacts = document.querySelectorAll("[name='contactBtn']");
+  const contactArray = Array.from(contacts);
+  var email;
+
+  contactArray.forEach(contact => {
+    contact.onclick = async function() {
+      email = contact.id;
+
+      // set email we will be emailing to
+      const emailLabel = document.querySelector('label');
+      const msgTextarea = document.querySelector('textarea');
+
+      // set some values on them
+      emailLabel.setAttribute("for", `${email}`);
+      msgTextarea.id = email;
+      emailLabel.textContent = email;
+    }
+  });
 };
+
+// will be waiting for message to be sent
+const sendMsg = document.querySelector("#sendMsg");
+const xhrMsg = new XMLHttpRequest();
+
+
+sendMsg.onclick = function() {
+  const url = 'http://localhost:3000/sendMsg';
+  const textarea = document.querySelector('textarea').value;
+  const email = document.querySelector('textarea').id;
+  const feedback = document.querySelector('#error');
+
+  // send data to server
+  xhrMsg.open("POST", url, true);
+  xhrMsg.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  xhrMsg.send(JSON.stringify({'email': email, 'msg': textarea}));
+  xhrMsg.responseText = "json";
+  xhrMsg.onload = () => {
+    if (xhrMsg.readyState == 4 && xhrMsg.status == 201) {
+      // get reponse and parse it to a new var
+      const jsonResponse = JSON.parse(xhrMsg.response);
+
+      // let user know message was sent
+      feedback.textContent = jsonResponse.message;
+    }
+  };
+}

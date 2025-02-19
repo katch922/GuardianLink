@@ -26,12 +26,12 @@ Overall flex container with smaller boxes inside */
 .flex-item-left {
     display: flex;
     justify-content: flex-end;
-    flex: 50%;
+    flex: 30%;
     padding-right: 20px;
 }
 /* flex-container-right will flex to the right */
 .flex-item-right {
-    flex: 50%;
+    flex: 70%;
 }
 
 /* Default button style */
@@ -187,33 +187,17 @@ End of Default Styling
 /* title page color and styling */
 h1 {
     color: #5F7470;
-    font-size: 4vh;
+    font-size: 3.5vh;
     margin: 25px;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
-/* sub-title styling */
-h2 {
-    color: #F9627D;
-    font-size: 3.5vh;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-}
-
-/* Para styling */
-p {
-    color: #002642;
-    font-size: 2vh;
-    font-weight: bold;
-}
-
-.table {
-    background: #CDDDDD;
-    color: #002642;
-    font-size: 2.5vh;
-    padding: 25px;
+textarea {
+    height: 200px;
     width: 100%;
-    text-align: left;
+    resize: none;
 }
-td {
-    padding-top: 75px;
+
+#sendMsg {
+    margin: 0;
 }

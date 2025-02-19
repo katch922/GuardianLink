@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Volunteer List</title>
+    <title>Contact Members</title>
     <meta name="author" content="R.K.">
     <meta charset="utf-8">
     <!-- make mobile friendly -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="/styles/userList.css">
-    <script async src="/src/volList.js"></script>
+    <link rel="stylesheet" href="/styles/comms.css">
   </head>
 
 <body class="body">
@@ -17,7 +16,7 @@
   <!-- Login Bar -->
   <nav class="logbar">
     <ul>
-      <li><a href='/logout' transition='Sign Out'>Sign Out</a></li>
+      <li><a href='/login' transition='Sign In'>Sign In</a></li>
       <li><a href='/register' transition='Register'>Register</a></li>
     </ul>
   </nav>
@@ -33,21 +32,7 @@
   </nav>
 
   <div class="flex-container">
-    <h1>List of Volunteers</h1>
-  </div>
-
-  <div class="flex-container">
-    <table class="table">
-
-      <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        <th>Hours Available (Week)</th>
-        <th>Get In Touch</th>
-      </tr>
-
-    </table>
+    <h1>Communication Platform</h1>
   </div>
 
   <div class="flex-container">
@@ -60,12 +45,7 @@
   </div>
 
   <div class="flex-container">
-    <div class="flex-item-left">
-      <input type="button" class="button" id="sendMsg" value="SEND">
-    </div>
-    <div class="flex-item-right">
-      <span id="error"></span>
-    </div>
+    <input type="button" class="button" id="sendMsg" value="SEND">
   </div>
 
 </body>

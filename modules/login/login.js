@@ -47,7 +47,6 @@ app.get("/register", routes);
 app.get("/admin", routes);
 app.get('/orgList', routes);
 app.get('/volList', routes);
-app.get('/forgot', routes);
 // dbRoutes (mysql)
 app.post("/profile", dbRoutes);
 app.post("/login", dbRoutes);
@@ -61,4 +60,5 @@ app.post("/editUser", dbRoutes);
 app.post('/updateUser', dbRoutes);
 app.post("/orgList", dbRoutes);
 app.post('/volList', dbRoutes);
+app.post('/sendMsg', dbRoutes);
 app.post('/resetPass', dbRoutes);

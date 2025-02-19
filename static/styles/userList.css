@@ -19,19 +19,19 @@ Overall flex container with smaller boxes inside */
     flex-direction: row;
     flex-wrap: wrap;
     background: inherit;
-    margin: 30px;
     font-family: sans-serif;
+    margin: 30px;
 }
 /* will flex to the left instead */
 .flex-item-left {
     display: flex;
     justify-content: flex-end;
-    flex: 50%;
+    flex: 30%;
     padding-right: 20px;
 }
 /* flex-container-right will flex to the right */
 .flex-item-right {
-    flex: 50%;
+    flex: 70%;
 }
 
 /* Default button style */
@@ -147,7 +147,7 @@ Overall flex container with smaller boxes inside */
 
 .labels {
     color: #F9627D;
-    font-size: 2vh;
+    font-size: 3vh;
     font-weight: bold;
     margin-top: 5px;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
@@ -164,9 +164,9 @@ Overall flex container with smaller boxes inside */
 }
 
 #error {
-    color: #5F7470;
-    font-size: 3vh;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    color: #002642;
+    background: #F9627D;
+    font-size: 1.5vh;
 }
 
 /* Mobile responsive weblayout */
@@ -207,13 +207,26 @@ p {
 }
 
 .table {
-    background: #CDDDDD;
     color: #002642;
     font-size: 2.5vh;
     padding: 25px;
     width: 100%;
     text-align: left;
 }
+th {
+    color: #918868;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
 td {
-    padding-top: 75px;
+    background: #CDDDDD;
+    font-size: 2vh;
+    padding: 40px;
+    text-align: left;
+}
+
+textarea {
+    padding: 25px;
+    height: 200px;
+    width: 100%;
+    resize: none;
 }

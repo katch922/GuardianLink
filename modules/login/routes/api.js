@@ -87,8 +87,4 @@ api.get("/volList", function(req, res) {
   }
 });
 
-api.get('/forgot', function(req, res) {
-  res.sendFile(path.join(homeDir, '/html/forgot.html'));
-});
-
 module.exports = api;
