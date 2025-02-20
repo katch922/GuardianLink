@@ -27,40 +27,40 @@ app.use(session({
 }));
 // express settings
 app.use(express.json());  // to read req.body.<params>
-app.use(express.urlencoded({extended: true}));  // parse data from POST for req.body.
+app.use(express.urlencoded({extended: true}));  // parse data from POST for req.body
 // serve filess /styles /img /src; web static files
 app.use(express.static(path.join(__dirname, '../../static')));
-// serve nodejs static files
-app.use("/fetch", express.static(__dirname + '/static'));
 
 // start express server
-app.listen(port, () => console.log(`Server Started on port:${port}`));
+app.listen(port, () => console.log(`>>> Server Started on port:${port}`));
 
 // ROUTES; Pages
 app.get("/", routes);
 app.get("/about", routes);
-app.get("/profile", routes);
+app.get("/admin", routes);
 app.get("/contact", routes);
 app.get("/login", routes);
 app.get("/logout", routes);
-app.get("/register", routes);
-app.get("/admin", routes);
 app.get('/orgList', routes);
+app.get("/profile", routes);
+app.get("/register", routes);
 app.get('/volList', routes);
+
 // dbRoutes (mysql)
-app.post("/profile", dbRoutes);
-app.post("/login", dbRoutes);
+app.post("/admin", dbRoutes);
+app.post("/contact", dbRoutes);
+app.post("/createBasicUser", dbRoutes);
 app.post("/createOrgUser", dbRoutes);
 app.post("/createVolUser", dbRoutes);
-app.post("/createBasicUser", dbRoutes);
-app.post("/admin", dbRoutes);
 app.post("/deleteUser", dbRoutes);
+app.post('/delMsg', dbRoutes);
 app.post("/delUser", dbRoutes);
 app.post("/editUser", dbRoutes);
-app.post('/updateUser', dbRoutes);
-app.post("/orgList", dbRoutes);
-app.post('/volList', dbRoutes);
-app.post('/sendMsg', dbRoutes);
 app.post('/fetchMsg', dbRoutes);
-app.post('/delMsg', dbRoutes);
-app.post('/resetPass', dbRoutes);
+app.post("/login", dbRoutes);
+app.post("/orgList", dbRoutes);
+app.post("/profile", dbRoutes);
+app.post('/resetPass', dbRoutes); // work in progress
+app.post('/sendMsg', dbRoutes);
+app.post('/updateUser', dbRoutes);
+app.post('/volList', dbRoutes);

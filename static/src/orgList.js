@@ -93,7 +93,7 @@ sendMsg.onclick = function() {
     else if (xhrMsg.readyState === 4 && xhrMsg.status === 400) {
       const jsonResponse = JSON.parse(xhrMsg.response);
 
-      // let user know message was sent
+      // let user know the error
       feedback.textContent = jsonResponse.message;
     }
   };

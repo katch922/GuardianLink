@@ -209,6 +209,7 @@ End of Default Styling
 
 .outer {
     background: #CDDDDD;
+    border-radius: 20px;
     margin: 30px;
     padding-top: 10px;
 }
@@ -231,6 +232,10 @@ End of Default Styling
     color: #002642;
     background: #F9627D;
     font-size: 1.5vh;
+}
+
+textarea {
+    height: 200px;
 }
 
 /* screen gets smaller than that adjust these settings for submit button */

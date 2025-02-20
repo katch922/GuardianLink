@@ -208,6 +208,7 @@ End of Default Styling
 
 .outer {
     background: #CDDDDD;
+    border-radius: 20px;
     margin: 30px;
     padding-top: 10px;
 }
@@ -225,6 +226,11 @@ End of Default Styling
     align-items: flex-start;
     flex: 30%;
 }
+
+textarea {
+    height: 200px;
+}
+
 /* screen gets smaller than that adjust these settings for submit button */
 @media only screen and (max-width: 800px) {
     #req-left {

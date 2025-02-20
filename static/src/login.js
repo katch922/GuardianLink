@@ -1,16 +1,31 @@
-// User feedback on login screen
 // creaete objects
-const msg = document.getElementById("msg");
-const submit = document.getElementById("submit");
+// User feedback on login screen
+const msg = document.querySelector("#msg");
+const submit = document.querySelector(".button");
 
-// create obj
 const xhr = new XMLHttpRequest();
 
-submit.onclick = function(req, res) {
-  // save user input and send to server
-  const emailInput = document.getElementById("email").value;
-  const passInput = document.getElementById("password").value;
-  // make the connection
+submit.onclick = function() {
+  // save user input
+  const emailInput = document.querySelector("#email").value;
+  const passInput = document.querySelector("#password").value;
+
+  // validate inputs
+  // validate email
+  if (!emailIsValid(emailInput)) {
+    alert(`${emailInput} not a valid email`);
+
+    return false;
+  }
+
+  // validate password
+  if (!passInput) {
+    alert('Please enter password');
+
+    return false;
+  }
+
+  // Input is good; send data to server
   let url = 'http://localhost:3000/login';
   xhr.open("POST", url, true);
   xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -29,4 +44,18 @@ submit.onclick = function(req, res) {
       window.location.href='/profile';
     }
   };
+};
+
+
+// METHODS for validation
+// validate email
+function emailIsValid(email) {
+  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  if (regex.test(email)) {
+    return true;
+  }
+  else {
+    return false;
+  }
 }

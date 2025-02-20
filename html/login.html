@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Sign In</title>
-    <meta name="author" content="R.K.">
-    <meta charset="utf-8">
-    <!-- make mobile friendly -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+  <title>Sign In</title>
+  <meta name="author" content="R.K.">
+  <meta charset="utf-8">
+  <!-- make mobile friendly -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="/styles/login.css">
-    <script defer src="/src/login.js"></script>
-  </head>
+  <link rel="stylesheet" href="/styles/login.css">
+  <script defer src="/src/login.js"></script>
+</head>
 
 <body class="body">
 
@@ -17,7 +17,7 @@
   <!-- Login Bar -->
   <nav class="logbar">
     <ul>
-      <li><a href='/logout' transition='Sign Out'>Sign Out</a></li>
+      <li><a href='/login' transition='Sign In'>Sign In</a></li>
       <li><a href='/register' transition='Register'>Register</a></li>
     </ul>
   </nav>
@@ -32,44 +32,49 @@
     </ul>
   </nav>
 
-  <!-- OUTER flex container -->
   <div class="flex-container">
     <img src="/img/guardian_logo.jpg" alt="GuardianLink Logo">
   </div>
 
+  <!-- Login Screen -->
+  <div class="flex-container">
+
+    <div class="flex-item-left">
+      <label for="email" class="labels"><b>Email</b></label>
+    </div>
+    <div class="flex-item-right">
+      <input type="text" class="inputs" id="email" autocomplete="on"
+        placeholder="Enter Email" required>
+      <span class="error">*</span>
+    </div>
+
+    <div class="flex-item-left" id="pass">
+      <label for="password" class="labels"><b>Password</b></label>
+    </div>
+    <div class="flex-item-right">
+      <input type="password" class="inputs" id="password" placeholder="Enter Password"
+        title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+        required>
+      <span class="error">*</span>
+    </div>
+
+    <div class="flex-item-left" id="submit">
+      <input type="submit" class="button" value="Login">
+    </div>
+    <div class="flex-item-right" id="forgot">
+      <span><a href="/forgot">Forgot password?</a></span>
+    </div>
+
+  </div>
+
+  <div class="flex-container">
+    <span class="error">* required fields</span>
+  </div>
+
+  <!-- feedback message from server -->
   <div class="flex-container">
     <span id="msg"></span>
   </div>
-
-  <!-- Login Screen -->
-    <div class="flex-container">
-
-      <div class="flex-item-left">
-      <!--<img src="#" alt="Avatar" class="avatar">-->
-        <label for="email" class="labels"><b>Email</b></label>
-      </div>
-      <div class="flex-item-right">
-        <input type="text" class="inputs" id="email" name="email"
-          placeholder="Enter Email" required>
-        <span class="error">*</span>
-      </div>
-
-      <div class="flex-item-left" id="pass">
-        <label for="password" class="labels"><b>Password</b></label>
-      </div>
-      <div class="flex-item-right">
-        <input type="password" class="inputs" id="password" name="password"
-          placeholder="Enter Password" required>
-        <span class="error">*</span>
-      </div>
-
-      <div class="flex-item-left" id="submit">
-        <input type="submit" class="button" id="submit" value="Login">
-      </div>
-      <div class="flex-item-right" id="forgot">
-        <span><a href="/forgot">Forgot password?</a></span>
-      </div>
-      </div>
 
 </body>
 

@@ -212,11 +212,6 @@ p {
 End of Default Styling
 ### END ### */
 
-#account {
-    justify-content: center;
-    align-items: center;
-}
-
 h3 {
     color: #918868;
     font-size: 2.5vh;
@@ -255,5 +250,10 @@ h3 {
 
 #user-details {
     background: #CDDDDD;
+    border-radius: 20px;
     padding: 25px 0 0 25px;
+}
+
+textarea {
+    height: 200px;
 }

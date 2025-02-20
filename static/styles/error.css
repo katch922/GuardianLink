@@ -169,6 +169,13 @@ Overall flex container with smaller boxes inside */
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
+/* Center Login button */
+#login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* Mobile responsive weblayout */
 @media (max-width: 800px) {
     .flex-container {

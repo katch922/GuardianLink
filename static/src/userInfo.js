@@ -17,7 +17,7 @@ xhr.open("POST", url, true);
 xhr.send();
 xhr.responseText = "json";
 xhr.onreadystatechange = () => {
-  if (xhr.readyState == 4 && xhr.status == 200) {
+  if (xhr.readyState === 4 && xhr.status === 200) {
     // get reponse and parse it to a new var
     let jsonResponse = JSON.parse(xhr.response);
     const type = jsonResponse.type;
@@ -29,31 +29,28 @@ xhr.onreadystatechange = () => {
     email.value = jsonResponse.email;
     hours.value = jsonResponse.hours;
     orgInfo.value = jsonResponse.info;
+
+    // based on user type add a button
     if (type === "admin") {
       // user is admin, add link to open admin page
-      //input.type = "button";
       button.className = "button";
       button.textContent = "Admin Tools";
       button.onclick = function() { window.location.href='/admin' };
-      document.getElementById("tools").appendChild(button);
+      document.querySelector("#tools").appendChild(button);
     }
     else if (type === 'vol') {
       // use is volunteer, display link for Organization List
       button.className = 'button';
       button.textContent = 'ORG LIST';
       button.onclick = function() { window.location.href='/orgList' };
-      document.getElementById("tools").appendChild(button);
+      document.querySelector("#tools").appendChild(button);
     }
     else if (type === 'org') {
       // use is volunteer, display link for Organization List
       button.className = 'button';
       button.textContent = 'VOL LIST';
       button.onclick = function() { window.location.href='/volList' };
-      document.getElementById("tools").appendChild(button);
+      document.querySelector("#tools").appendChild(button);
     }
-  }
-  else if (xhr.status === 400) {
-    console.log(`"Error:" ${xhr.status}`);
-    document.querySelector("#feedback").textContent = "Something went wrong";
   }
 };

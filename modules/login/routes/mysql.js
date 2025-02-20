@@ -11,7 +11,7 @@ const homeDir = path.normalize(path.resolve(__dirname, '../../../'));
 let dest = path.join(homeDir, "/static/uploads/");
 // Multer disk storage
 const storage = multer.diskStorage({
-  destination: function (req, res, cb) {
+  destination: function (cb) {
     cb(null, dest);
   },
   filename: function (req, file, cb) {
@@ -27,7 +27,7 @@ const upload = multer({
   storage: storage,
   dest: dest,
   limits: { filesize: maxSize },
-  fileFilter: function (req, file, cb) {
+  fileFilter: function (file, cb) {
     const filetypes = /pdf|doc|docx|odt/;
     const mimetype = filetypes.test(file.mimetype);
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
@@ -47,8 +47,9 @@ const DB_PASSWORD = process.env.DB_PASSWORD;
 const DB_DATABASE = process.env.DB_DATABASE;
 const DB_PORT = process.env.DB_PORT;
 
-// admins email for password reset
-const EMAIL = process.env.EMAIL;
+// Contact Us email
+const GEN_EMAIL = process.env.GEN_EMAIL;
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
 // create pool for mysql connections
 const db = mysql.createPool({
@@ -61,78 +62,10 @@ const db = mysql.createPool({
 });
 
 // connect to DB
-db.getConnection((err, connection) => {
+db.getConnection((err, conn) => {
   if (err) throw (err);
-  console.log("DB connected successful: " + connection.threadId);
-})
 
-// LOGIN (AUTH USER & create user session)
-api.post("/login", (req, res) => {
-  const email = req.body.email;
-  const password = req.body.pass;
-
-  db.getConnection (async (err, connection) => {
-    if (err) throw (err);
-
-    const dbSearch = "SELECT * FROM users WHERE email = ?";
-    const query = mysql.format(dbSearch, [email]);
-
-    await connection.query(query, async (err, result) => {
-      connection.release();
-
-      if (err) throw (err);
-
-      if (result.length == 0) {
-        res.status(401).send({ message: 'Authenticaton Failure' });
-      }
-      else {
-        // get hashed pass from result & save some other useful info
-        const hashedPassword = result[0].password;
-        const firstName = result[0].forename;
-        const lastName = result[0].surname;
-        const hours = result[0].available;
-        const orgName = result[0].org_name;
-        const type = result[0].user_type;
-        const id = result[0].id;
-        const info = result[0].concerns;
-
-        if (await bcrypt.compare(password, hashedPassword)) {
-          req.session.auth = true;
-          req.session.firstName = firstName;
-          req.session.lastName = lastName;
-          req.session.email = email;
-          req.session.hours = hours;
-          req.session.orgName = orgName;
-          req.session.info = info;
-          req.session.type = type;
-          req.session.cookieId = id;
-          res.cookie(id, { maxAge: 30000, signed: true, httpOnly: true});
-          console.log(req.session);
-          console.log(req.session.id);
-          //res.redirect('/profile');
-          res.status(200).send({ message: 'Login Successful' });
-        }
-        else {
-          //res.send("Invalid Login Credentials!");
-          res.status(401).send({ message: 'Authenticaton Failure' });
-          //res.end();
-        } // end of bcrypt.compare()
-      }   // end of User exists
-      res.end();
-    });   // end of connection query()
-  });     // end of db.connection()
-});       // end of app.post()
-
-// XMLHttpRequest req to populate page with user info
-api.post("/profile", (req, res) => {
-  if (req.session.auth) {
-    res.status(200).send({ orgName: req.session.orgName, fname: req.session.firstName,
-     sname: req.session.lastName, email: req.session.email, hours: req.session.hours,
-     info: req.session.info, type: req.session.type });
-  }
-  else {
-    res.end(400);
-  }
+  console.log(">>> DB connected successful: " + conn.threadId);
 });
 
 // QUERY to list users on admin page
@@ -175,112 +108,40 @@ api.post("/admin", async (req, res) => {
       }); // end of conn.query()
     }
   });   // end of db.getConnection()
-});     // end of api.post()
+});     // end of /admin
 
-// CREATE ORG USERS
-api.post("/createOrgUser", async (req,res) => {
-  const orgName = req.body.orgName.trim();
-  const email = req.body.orgEmail;
-  const info = req.body.concern.trim();
-  const type = 'org';
+// CONTACT US api; in real world would add protection against spam as well
+api.post('/contact', async (req, res) => {
+  // get data from client; make some changes to it if required
+  const email = req.body.email.trim();
+  const msg = req.body.msg.trim();
 
-  const hashedPassword = await bcrypt.hash(req.body.orgPass1, 12);
-
-  db.getConnection(async (err, connection) => {
+  // prep mysql call
+  db.getConnection(async (err, conn) => {
     if (err) throw (err);
 
-    const dbSearch =  // search DB
-      "SELECT email FROM users WHERE email = ?";
-    const query = mysql.format(dbSearch, [email]);
+    // prep search query against mysql injection
+    const preInsert =
+      "INSERT INTO communication(email_from, email_to, message) VALUES(?, ?, ?)";
+    const dbInsert = mysql.format(preInsert, [email, GEN_EMAIL, msg]);
 
-    const dbInsert = "INSERT INTO users VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    const insert = mysql.format(dbInsert,
-      [0, null, null, email, hashedPassword, type, info, null, null, null, orgName]);
-
-    await connection.query (query, async (err, result) => {
+    // save data to DB
+    await conn.query(dbInsert, (err) => {
       if (err) throw (err);
 
-      console.log(">>> Search Results");
-      console.log(result.length);
+      // close connection to MySQL
+      conn.release();
 
-      if (result.length !== 0) {
-        connection.release();
-        console.log(">>> Email already exists");
-        res.status(409).send({ message: `${email} already registered, please login` });
-      }
-      else {
-        await connection.query (insert, (err, result) => {
-          connection.release();
-
-          if (err) throw (err);
-
-          console.log(">>> Created new User");
-          console.log(result.insertId);
-          res.status(201).send({ message: `Registration Successful` });
-        });
-      }
-    }); // end of connection.query()
+      // send feedback to client and console
+      console.log(`>>> Inquery email sent to ${GEN_EMAIL}`);
+      res.status(200).send({ msg:
+        'Thank you for contacting Guardian Link, we will get back to you shortly.' });
+    }); // end of conn.query()
   });   // end of db.getConnection()
-});     // end of app.post()
-
-// CREATE VOL USERS
-api.post("/createVolUser", upload.single("resume"), async (req, res) => {
-  // Cap first letter, rest lowercase
-  const firstName = req.body.fname.trim().charAt(0).toUpperCase() +
-    req.body.fname.slice(1).toLowerCase();
-  const lastName = req.body.sname.trim().charAt(0).toUpperCase() +
-    req.body.sname.slice(1).toLowerCase();
-  const email = req.body.volEmail;
-  const hours = req.body.hours;
-  const crime = req.body.crime;
-  const type = 'vol';
-  let resume = "no";
-
-  if (req.file) {
-    resume = "yes";
-  }
-
-  const hashedPassword = await bcrypt.hash(req.body.volPass1, 12);
-
-  db.getConnection(async (err, connection) => {
-    if (err) throw (err);
-
-    const dbSearch =  // search DB
-      "SELECT email FROM users WHERE email = ?";
-    const query = mysql.format(dbSearch, [email]);
-
-    const dbInsert = "INSERT INTO users VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    const insert = mysql.format(dbInsert, [0, firstName, lastName, email, hashedPassword,
-      type, null, hours, crime, resume, null]);
-
-    await connection.query (query, async (err, result) => {
-      if (err) throw (err);
-
-      console.log(">>> Search Results");
-      console.log(result.length);
-
-      if (result.length !== 0) {
-        connection.release();
-        console.log(">>> Email already exists");
-        res.status(409).send({ message: `${email} already registered, please login` });
-      }
-      else {
-        await connection.query (insert, (err, result) => {
-          connection.release();
-
-          if (err) throw (err);
-
-          console.log(">>> Created new User");
-          console.log(result.insertId);
-          res.status(201).redirect("/login");
-        });
-      }
-    }); // end of connection.query()
-  });   // end of db.getConnection()
-});     // end of api.post()
+});     // end of /contact
 
 // CREATE Basic USERS; admin tool
-api.post("/createBasicUser", async (req,res) => {
+api.post("/createBasicUser", async (req, res) => {
   const firstName = req.body.fname.trim().charAt(0).toUpperCase() +
     req.body.fname.slice(1).toLowerCase();
   const lastName = req.body.sname.trim().charAt(0).toUpperCase() +
@@ -332,52 +193,230 @@ api.post("/createBasicUser", async (req,res) => {
       }
     }); // end of connection.query()
   });   // end of db.getConnection()
-});     // end of api.post()
+});     // end of /createBasicUser
 
-api.post("/orgList", async(req, res) => {
+// CREATE ORG USERS
+api.post("/createOrgUser", async (req, res) => {
+  const orgName = req.body.orgName.trim();
+  const email = req.body.orgEmail.trim();
+  const info = req.body.concern.trim();
   const type = 'org';
 
-  // prep mysql conn
+  // hash password
+  const hashedPassword = await bcrypt.hash(req.body.orgPass1, 12);
+
+  // prep connection to db
   db.getConnection(async (err, conn) => {
     if (err) throw (err);
 
-    const dbSearch = "SELECT email, concerns, org_name FROM users WHERE user_type=?";
-    const query = mysql.format(dbSearch, [type]);
+    const dbSearch = "SELECT email FROM users WHERE email = ?";
+    const query = mysql.format(dbSearch, [email]);
 
-    // connect to mysql get results
+    const dbInsert = "INSERT INTO users VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const insert = mysql.format(dbInsert,
+      [0, null, null, email, hashedPassword, type, info, null, null, null, orgName]);
+
     await conn.query (query, async (err, result) => {
       if (err) throw (err);
 
-      console.log(">>> Query Success");
-      conn.release();
+      console.log(">>> Search Results");
 
-      res.status(200).send(result);
+      if (result.length !== 0) {
+        conn.release();
+        console.log(">>> Email already exists");
+        res.status(409).send({ message: `${email} already registered, please login` });
+      }
+      else {
+        await conn.query (insert, (err, result) => {
+          if (err) throw (err);
+          conn.release(); // close DB connection
+
+          console.log(`>>> Created new User ${email}`);
+          console.log(result.insertId); // user id
+          res.status(201).send({ message: `Registration Successful` });
+        });
+      }
     }); // end of conn.query()
   });   // end of db.getConnection()
-});     // end of /orgList
+});     // end of /createOrgUser
 
-api.post("/volList", async(req, res) => {
+// CREATE VOL USERS
+api.post("/createVolUser", upload.single("resume"), async (req, res) => {
+  // Cap first letter, rest lowercase
+  const firstName = req.body.fname.trim().charAt(0).toUpperCase() +
+    req.body.fname.slice(1).toLowerCase();
+  const lastName = req.body.sname.trim().charAt(0).toUpperCase() +
+    req.body.sname.slice(1).toLowerCase();
+  const email = req.body.volEmail;
+  const hours = req.body.hours;
+  const crime = req.body.crime;
   const type = 'vol';
+  let resume = "no";
 
-  // prep mysql conn
+  // if file is sent, resume is provided
+  if (req.file) {
+    resume = "yes";
+  }
+
+  // hash pass
+  const hashedPassword = await bcrypt.hash(req.body.volPass1, 12);
+
+  // prep connection
   db.getConnection(async (err, conn) => {
     if (err) throw (err);
 
-    const dbSearch =
-      "SELECT forename, surname, email, available FROM users WHERE user_type=?";
-    const query = mysql.format(dbSearch, [type]);
+    const dbSearch = "SELECT email FROM users WHERE email = ?";
+    const query = mysql.format(dbSearch, [email]);
 
-    // connect to mysql get results
+    const dbInsert = "INSERT INTO users VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const insert = mysql.format(dbInsert, [0, firstName, lastName, email, hashedPassword,
+      type, null, hours, crime, resume, null]);
+
+    await conn.query (query, async (err, result) => {
+      if (err) throw (err);
+
+      console.log(">>> Search Results");
+
+      if (result.length !== 0) {
+        conn.release();
+
+        console.log(">>> Email already exists");
+        res.status(409).send({ message: `${email} already registered, please login` });
+      }
+      else {
+        await conn.query (insert, (err, result) => {
+          if (err) throw (err);
+
+          conn.release();
+
+          console.log(`>>> Created new User ${email}`);
+          console.log(result.insertId);
+          res.status(201).redirect("/login");
+        });
+      }
+    }); // end of conn.query()
+  });   // end of db.getConnection()
+});     // end of /createVolUser
+
+// DELETE user via Admin Tools
+api.post("/deleteUser", async (req, res) => {
+  const email = req.body.users;
+
+  db.getConnection(async (err, conn) => {
+    if (err) throw (err);
+
+    const dbSearch = "SELECT email, user_type FROM users WHERE email = ?";
+    const query = mysql.format(dbSearch, [email]);
+
+    const dbDelete = "DELETE FROM users WHERE email = ?";
+    const delUser = mysql.format(dbDelete, [email]);
+
     await conn.query(query, async (err, result) => {
       if (err) throw (err);
 
-      console.log(">>> Query Success");
-      conn.release();
+      if (result.length === 0) {
+        conn.release();
+        console.log(`>>>${email} No such account`);
+        res.sendStatus(400);
+      }
+      else {
+        await conn.query (delUser, (err, result) => {
+          conn.release();
 
-      res.status(200).send(result);
+          if (err) throw (err);
+
+          console.log(`>>> ${email} account deleted`);
+          res.status(200).redirect("/admin");
+        });
+      }
     }); // end of conn.query()
   });   // end of db.getConnection()
-});     // end of /volList
+});     // end of /deleteUser
+
+// delete message from users box
+api.post('/delMsg', async (req, res) => {
+  const msgToDel = req.body.msgToDel;
+
+  // prep mysql connection
+  db.getConnection(async (err, conn) => {
+    if (err) throw (err);
+
+    const dbSearch = "SELECT id FROM communication WHERE id = ?";
+    const query = mysql.format(dbSearch, [msgToDel]);
+
+    const dbDelete = "DELETE FROM communication WHERE id = ?";
+    const delMsg = mysql.format(dbDelete, [msgToDel]);
+
+    // connect to DB to del msg
+    await conn.query(query, async (err, result) => {
+      if (err) throw (err);
+
+      if (result.length === 0) {
+        conn.release();
+        console.log(`>>> #${msgToDel} message does not exist`);
+        res.status(400).send({ message: `Message does not exist` });
+      }
+      else {
+        await conn.query (delMsg, (err) => {
+          conn.release();
+
+          if (err) throw (err);
+
+          console.log(`>>> #${msgToDel} message deleted`);
+          res.status(200).send({ message: `Message deleted` });
+        });
+      }
+    }); // end of conn.query()
+  });   // end of db.getConnection()
+});     // end of /delMsg
+
+// delete your own user
+api.post("/delUser", async (req, res) => {
+  const email = req.session.email;
+  const type = req.session.type;
+
+  // prep db conn
+  db.getConnection(async (err, conn) => {
+    if (err) throw (err);
+
+    const dbSearch = "SELECT email FROM users WHERE user_type = ?";
+    const query = mysql.format(dbSearch, [type]);
+
+    const dbDelete = "DELETE FROM users WHERE email = ?";
+    const delUser = mysql.format(dbDelete, [email]);
+
+    await conn.query(query, async (err, result) => {
+      if (err) throw (err);
+
+      // user does not exist
+      if (result.length === 0) {
+        conn.release();
+
+        console.log(`>>> ${email} No such account`);
+        res.status(400).send({ message: `${email} does not exist` });
+      }
+      // do not delete if only one admin user
+      else if (type === 'admin' && result.length === 1) {
+        conn.release();
+
+        console.log(`>>> Must have at least one ${type} user`);
+        res.status(400).send({ message: `Must have at least one ${type} user` });
+      }
+      else {
+        await conn.query (delUser, (err) => {
+          conn.release();
+
+          if (err) throw (err);
+
+          console.log(`>>> ${email} account deleted`);
+          res.cookie(req.session.cookieId, {maxAge: 0});
+          req.session.destroy();
+          res.status(200).redirect('/');
+        });
+      }
+    }); // end of conn.query()
+  });   // end of db.getConnection()
+});     // end of /delUser
 
 // EDIT users
 // In real life environment if user type changes, would force logout the user
@@ -500,6 +539,204 @@ api.post("/editUser", async (req, res) => {
   }
 });       // end of /editUser
 
+// fetch messages for user
+api.post('/fetchMsg', async (req, res) => {
+  const email = req.session.email.trim();
+
+  // prep db connection
+  db.getConnection(async (err, conn) => {
+    if (err) throw (err);
+
+    const dbSearch = "SELECT * FROM communication WHERE email_to = ?";
+    const query = mysql.format(dbSearch, [email]);
+
+    // connect to mysql get results
+    await conn.query(query, async (err, result) => {
+      if (err) throw (err);
+
+      console.log(">>> Query Success");
+      conn.release();
+
+      res.status(200).send(result);
+    }); // end of conn.query()
+  });   // end of db.getConnection()
+});     // end of /fetchMsg
+
+// LOGIN (AUTH USER & create user session)
+// in real world you would limit the amount of attempts to login
+api.post("/login", (req, res) => {
+  const email = req.body.email.trim();
+  const password = req.body.pass.trim();
+
+  // prep connection to mysql
+  db.getConnection (async (err, conn) => {
+    if (err) throw (err);
+
+    const dbSearch = "SELECT * FROM users WHERE email = ?";
+    const query = mysql.format(dbSearch, [email]);
+
+    // get data from DB
+    await conn.query(query, async (err, result) => {
+      conn.release(); // close mysql connection
+
+      if (err) throw (err);
+
+      if (result.length === 0) {
+        res.status(401).send({ message: 'Authenticaton Failure' });
+      }
+      else {
+        // get hashed pass from result & save some other useful info
+        const hashedPassword = result[0].password;
+        const firstName = result[0].forename;
+        const lastName = result[0].surname;
+        const hours = result[0].available;
+        const orgName = result[0].org_name;
+        const type = result[0].user_type;
+        const id = result[0].id;
+        const info = result[0].concerns;
+
+        // make sure password hash matches
+        if (await bcrypt.compare(password, hashedPassword)) {
+          // if it does save session info and auth user
+          req.session.auth = true;
+          req.session.firstName = firstName;
+          req.session.lastName = lastName;
+          req.session.email = email;
+          req.session.hours = hours;
+          req.session.orgName = orgName;
+          req.session.info = info;
+          req.session.type = type;
+          req.session.cookieId = id;  // cookId will be user id
+          res.cookie(id, { maxAge: 30000, signed: true, httpOnly: true});
+
+          // feedback to console and user
+          console.log(req.session);
+          console.log(req.session.id);
+          res.status(200);
+        }
+        else {
+          res.status(401).send({ message: 'Authenticaton Failure' });
+        } // end of bcrypt.compare()
+        res.end();
+      }   // end of User exists
+    });   // end of conn.query()
+  });     // end of db.connection()
+});       // end of /login
+
+api.post("/orgList", async(req, res) => {
+  const type = 'org';
+
+  // prep mysql conn
+  db.getConnection(async (err, conn) => {
+    if (err) throw (err);
+
+    const dbSearch = "SELECT email, concerns, org_name FROM users WHERE user_type=?";
+    const query = mysql.format(dbSearch, [type]);
+
+    // connect to mysql get results
+    await conn.query (query, async (err, result) => {
+      if (err) throw (err);
+
+      console.log(">>> Query Success");
+      conn.release();
+
+      res.status(200).send(result);
+    }); // end of conn.query()
+  });   // end of db.getConnection()
+});     // end of /orgList
+
+// XMLHttpRequest req to populate page with user info
+api.post("/profile", (req, res) => {
+  if (req.session.auth) {
+    res.status(200).send({ orgName: req.session.orgName, fname: req.session.firstName,
+     sname: req.session.lastName, email: req.session.email, hours: req.session.hours,
+     info: req.session.info, type: req.session.type });
+  }
+  else {
+    res.end(400);
+  }
+}); // end of /profile
+
+/***** WORK IN PROGRESS *****/
+// not a great way to setup password reset, not a very secure way.
+// real life would want to send a reset email link and let the user reset their password
+// while the email token is valid
+api.post("/resetPass", async (req, res) => {
+  const email = req.body.email.trim();
+  const msg = `Password reset for ${email}`;
+
+  // prep db call
+  db.getConnection(async (err, conn) => {
+    if (err) throw (err);
+
+    const dbSearch = "SELECT email, id FROM users WHERE email = ?";
+    const query = mysql.format(dbSearch, [email]);
+
+    // connect to DB to get results
+    await conn.query(query, async (err, result) => {
+      if (err) throw (err);
+
+      if (result.length === 0) {
+        conn.release();
+        console.log(`${email} does not exist`);
+        res.status(404).send({ message: `Something went wrong.` });
+      }
+      else {
+        conn.release();
+        console.log(`${email} password reset sent`)
+        res.status(200).send({ message: `Password reset sent to admin` });
+
+        // save message to DB, the admin will reset password
+        // prep mySQL connection
+        db.getConnection(async (err, conn) => {
+          if (err) throw (err);
+
+          const dbMsg =
+            "UPDATE communication SET email_from=?, email_to=?, message=? WHERE email_from=?";
+          const saveMsg = mysql.format(dbMsg, [email, EMAIL, msg, email]);
+
+          // connect to DB and save message
+          await conn.query(saveMsg, async (err, result) => {
+
+          }); // end of conn.query()
+        });   // end of db.getConnection()
+      }
+    }); // end of conn.query()
+  });   // end of db.getConnection()
+});     // end of /resetPass
+
+// messaging app, will use mysql DB, keeping it simple for this project
+api.post("/sendMsg", async (req, res) => {
+  const emailFrom = req.session.email.trim();
+  const emailTo = req.body.email.trim();
+  const msg = req.body.msg.trim();
+
+  // ADD REQ att to html tag
+  if (!msg) {
+    res.status(400).send({ message: `Message cannot be empty` });
+  }
+  else {
+    // prep connection to DB
+    db.getConnection(async (err, conn) => {
+      if (err) throw (err);
+
+      const dbInsert =
+        "INSERT INTO communication(email_from, email_to, message) VALUES(?, ?, ?)";
+      const insert = mysql.format(dbInsert, [emailFrom, emailTo, msg]);
+
+      // connect to mysql and make the changes
+      await conn.query(insert, (err, result) => {
+        conn.release(); // close mysql connection
+        if (err) throw (err);
+
+        console.log(`>>> Message sent to ${emailTo}`);
+        res.status(201).send({ message: `Message sent to ${emailTo}` });
+      }); // end of conn.query()
+    });   // end of db.getConnection()
+  }
+});     // end of /sendMsg
+
+// Update own user
 api.post('/updateUser', async (req, res) => {
   // will be used to query the DB
   const email = req.session.email;
@@ -543,7 +780,10 @@ api.post('/updateUser', async (req, res) => {
         "UPDATE users SET forename=?, surname=?, password=?, concerns=?, available=?, org_name=? WHERE email=?";
       const update = mysql.format(dbUpdate, [firstName, lastName, hashedPass, info,
         hours, orgName, email]);
-  
+
+      // IF NOTHING CHANGED; tell user and do not send make changes
+      
+
       await conn.query(query, async (err, result) => {
         if (err) throw (err);
 
@@ -613,126 +853,16 @@ api.post('/updateUser', async (req, res) => {
   }
 });       // end of /updateUser
 
-// DELETE user via Admin Tools
-api.post("/deleteUser", async (req, res) => {
-  const email = req.body.users;
+api.post("/volList", async(req, res) => {
+  const type = 'vol';
 
+  // prep mysql conn
   db.getConnection(async (err, conn) => {
     if (err) throw (err);
 
-    const dbSearch = "SELECT email, user_type FROM users WHERE email = ?";
-    const query = mysql.format(dbSearch, [email]);
-
-    const dbDelete = "DELETE FROM users WHERE email = ?";
-    const delUser = mysql.format(dbDelete, [email]);
-
-    await conn.query(query, async (err, result) => {
-      if (err) throw (err);
-
-      if (result.length === 0) {
-        conn.release();
-        console.log(`>>>${email} No such account`);
-        res.sendStatus(400);
-      }
-      else {
-        await conn.query (delUser, (err, result) => {
-          conn.release();
-
-          if (err) throw (err);
-
-          console.log(`>>> ${email} account deleted`);
-          res.status(200).redirect("/admin");
-        });
-      }
-    }); // end of conn.query()
-  });   // end of db.getConnection()
-});     // end of api.post()
-
-// delete your own user
-api.post("/delUser", async (req, res) => {
-  const email = req.session.email;
-  const type = req.session.type;
-
-  db.getConnection(async (err, conn) => {
-    if (err) throw (err);
-
-    const dbSearch = "SELECT email FROM users WHERE user_type = ?";
+    const dbSearch =
+      "SELECT forename, surname, email, available FROM users WHERE user_type=?";
     const query = mysql.format(dbSearch, [type]);
-
-    const dbDelete = "DELETE FROM users WHERE email = ?";
-    const delUser = mysql.format(dbDelete, [email]);
-
-
-    await conn.query(query, async (err, result) => {
-      if (err) throw (err);
-
-      if (result.length === 0) {
-        conn.release();
-        console.log(`>>> ${email} No such account`);
-        res.status(400).send({ message: `${email} does not exist` });
-      }
-      // do not delete if only one admin user
-      else if (type === 'admin' && result.length === 1) {
-        conn.release();
-        console.log(`Must have at least one ${type} user`);
-        res.status(400).send({ message: `Must have at least one ${type} user` });
-      }
-      else {
-        await conn.query (delUser, (err) => {
-          conn.release();
-
-          if (err) throw (err);
-
-          console.log(`>>> ${email} account deleted`);
-          res.cookie(req.session.cookieId, {maxAge: 0});
-          req.session.destroy();
-          res.status(200).redirect('/');
-        });
-      }
-    }); // end of conn.query()
-  });   // end of db.getConnection()
-});     // end of /delUser
-
-// messaging app, will use mysql DB, keeping it simple for this project
-api.post("/sendMsg", async (req, res) => {
-  const emailFrom = req.session.email.trim();
-  const emailTo = req.body.email.trim();
-  const msg = req.body.msg.trim();
-
-  if (!msg) {
-    res.status(400).send({ message: `Message cannot be empty` });
-  }
-  else {
-    // prep connection to DB
-    db.getConnection(async (err, conn) => {
-      if (err) throw (err);
-
-      const dbInsert =
-        "INSERT INTO communication(email_from, email_to, message) VALUES(?, ?, ?)";
-      const insert = mysql.format(dbInsert, [emailFrom, emailTo, msg]);
-
-      // connect to mysql and make the changes
-      await conn.query(insert, (err, result) => {
-        conn.release(); // close mysql connection
-        if (err) throw (err);
-
-        console.log(`>>> Message sent to ${emailTo}`);
-        res.status(201).send({ message: `Message sent to ${emailTo}` });
-      }); // end of conn.query()
-    });   // end of db.getConnection()
-  }
-});     // end of /sendMsg
-
-// fetch messages for user
-api.post('/fetchMsg', async (req, res) => {
-  const email = req.session.email.trim();
-
-  // prep db connection
-  db.getConnection(async (err, conn) => {
-    if (err) throw (err);
-
-    const dbSearch = "SELECT * FROM communication WHERE email_to = ?";
-    const query = mysql.format(dbSearch, [email]);
 
     // connect to mysql get results
     await conn.query(query, async (err, result) => {
@@ -744,90 +874,7 @@ api.post('/fetchMsg', async (req, res) => {
       res.status(200).send(result);
     }); // end of conn.query()
   });   // end of db.getConnection()
-});     // end of /fetchMsg
+});     // end of /volList
 
-// delete message from users box
-api.post('/delMsg', async (req, res) => {
-  const msgToDel = req.body.msgToDel;
-
-  // prep mysql connection
-  db.getConnection(async (err, conn) => {
-    if (err) throw (err);
-
-    const dbSearch = "SELECT id FROM communication WHERE id = ?";
-    const query = mysql.format(dbSearch, [msgToDel]);
-
-    const dbDelete = "DELETE FROM communication WHERE id = ?";
-    const delMsg = mysql.format(dbDelete, [msgToDel]);
-
-    // connect to DB to del msg
-    await conn.query(query, async (err, result) => {
-      if (err) throw (err);
-
-      if (result.length === 0) {
-        conn.release();
-        console.log(`>>> #${msgToDel} message does not exist`);
-        res.status(400).send({ message: `Message does not exist` });
-      }
-      else {
-        await conn.query (delMsg, (err) => {
-          conn.release();
-
-          if (err) throw (err);
-
-          console.log(`>>> #${msgToDel} message deleted`);
-          res.status(200).send({ message: `Message deleted` });
-        });
-      }
-    }); // end of conn.query()
-  });   // end of db.getConnection()
-});     // end of /delMsg
-
-// not a great way to setup password reset, not a very secure way.
-// real life would want to send a reset email link and let the user reset their password
-// while the email token is valid
-api.post("/resetPass", async (req, res) => {
-  const email = req.body.email.trim();
-  const msg = `Password reset for ${email}`;
-
-  // prep db call
-  db.getConnection(async (err, conn) => {
-    if (err) throw (err);
-
-    const dbSearch = "SELECT email, id FROM users WHERE email = ?";
-    const query = mysql.format(dbSearch, [email]);
-
-    // connect to DB to get results
-    await conn.query(query, async (err, result) => {
-      if (err) throw (err);
-
-      if (result.length === 0) {
-        conn.release();
-        console.log(`${email} does not exist`);
-        res.status(404).send({ message: `Something went wrong.` });
-      }
-      else {
-        conn.release();
-        console.log(`${email} password reset sent`)
-        res.status(200).send({ message: `Password reset sent to admin` });
-
-        // save message to DB, the admin will reset password
-        // prep mySQL connection
-        db.getConnection(async (err, conn) => {
-          if (err) throw (err);
-
-          const dbMsg =
-            "UPDATE communication SET email_from=?, email_to=?, message=? WHERE email_from=?";
-          const saveMsg = mysql.format(dbMsg, [email, EMAIL, msg, email]);
-
-          // connect to DB and save message
-          await conn.query(saveMsg, async (err, result) => {
-
-          }); // end of conn.query()
-        });   // end of db.getConnection()
-      }
-    }); // end of conn.query()
-  });   // end of db.getConnection()
-});     // end of /resetPass
 
 module.exports = api;

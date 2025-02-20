@@ -2,34 +2,6 @@
 const orgSubmit = document.getElementById("orgSubmit");
 const volSubmit = document.getElementById("volSubmit");
 
-/*-----------------VALIDATION ORG-------------------------*/
-// validate fields for Org registration form
-orgSubmit.onclick = function() {
-  // validate email
-  const email = document.getElementById("orgEmail").value;
-
-  if (!emailIsValid(email)) {
-    alert(`${email} not a valid email`);
-    location.reload();
-    return false;
-  }
-
-  // validate passwords
-  const pass1 = document.getElementById("orgPass1").value;
-  const pass2 = document.getElementById("orgPass2").value;
-
-  if (!passIsValid(pass1) || (!passIsValid(pass2))) {
-    alert(`Bad password. Hover over for requirements.`);
-    location.reload();
-    return false;
-  }
-  else if (pass1 !== pass2) {
-    alert("Passwords do not match");
-    location.reload();
-    return false;
-  }
-}
-
 /*-----------------VALIDATION VOL-------------------------*/
 // Validate fields for Volunteer Registration Form
 volSubmit.onclick = function() {

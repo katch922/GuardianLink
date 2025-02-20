@@ -1,6 +1,6 @@
 // create objs
 const updateUser = document.querySelector("#updateBtn");
-const xhrUpdate = new XMLHttpRequest();
+const xhr3 = new XMLHttpRequest();
 
 /*-----------VALIDATION DATA BEFORE UPDATE----------------*/
 updateUser.onclick = function () {
@@ -17,6 +17,7 @@ updateUser.onclick = function () {
   if (firstName.length > 0 || lastName.length > 0) {
     if (!nameIsValid(firstName) || (!nameIsValid(lastName))) {
       alert("Only letters allowed in name!");
+
       return false;
     }
   }
@@ -25,6 +26,7 @@ updateUser.onclick = function () {
   if (pass) {
     if (!passIsValid(pass)) {
       alert(`Bad password. Hover over for requirements.`);
+
       return false;
     }
   }
@@ -32,33 +34,35 @@ updateUser.onclick = function () {
   // validate email
   if (!emailIsValid(email)) {
     alert(`${email} not a valid email`);
-    location.reload();
+
     return false;
   }
 
   // validate hours
   if (isNaN(hours)) {
     alert("Hours per week must be a number between 0 - 168");
+
     return false;
   }
   else if (hours > 168 || hours < 0) {
     alert("Hours per week must be between 0 - 168");
+
     return false;
   }
 
   // user validated; send data to server
   const url = 'http://localhost:3000/updateUser';
-  xhrUpdate.open("POST", url, true);
-  xhrUpdate.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-  xhrUpdate.send(JSON.stringify({
+  xhr3.open("POST", url, true);
+  xhr3.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  xhr3.send(JSON.stringify({
     'fname': firstName, 'sname': lastName, 'email': email, 'hours': hours,
     'orgName': orgName, 'info': info, 'pass': pass
   }));
-  xhrUpdate.responseText = "json";
-  xhrUpdate.onload = () => {
-    if (xhrUpdate.readyState == 4 && xhrUpdate.status == 200) {
+  xhr3.responseText = "json";
+  xhr3.onload = () => {
+    if (xhr3.readyState === 4 && xhr3.status === 200) {
       // get reponse and parse it to a new var
-      let jsonResponse = JSON.parse(xhrUpdate.response);
+      let jsonResponse = JSON.parse(xhr3.response);
 
       document.querySelector("#feedback").textContent = jsonResponse.message;
     }
@@ -67,6 +71,7 @@ updateUser.onclick = function () {
     }
   };
 }
+
 
 /*-----------------METHODS--------------------------------*/
 // method to validation email

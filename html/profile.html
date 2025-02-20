@@ -1,110 +1,111 @@
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Profile</title>
-    <meta name="author" content="R.K.">
-    <meta charset="utf-8">
-    <!-- make mobile friendly -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+  <title>Profile</title>
+  <meta name="author" content="R.K.">
+  <meta charset="utf-8">
+  <!-- make mobile friendly -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="/styles/profile.css">
-    <!-- Will populate user info page -->
-    <script defer src="/src/userInfo.js"></script>
-    <script defer src="/src/delUser.js"></script>
-    <script defer src="/src/updateUser.js"></script>
-  </head>
+  <link rel="stylesheet" href="/styles/profile.css">
+  <!-- Will populate user info page -->
+  <script defer src="/src/userInfo.js"></script>
+  <script defer src="/src/delUser.js"></script>
+  <script defer src="/src/updateUser.js"></script>
+</head>
 
-  <body class="body">
+<body class="body">
 
-    <!-- Navigation Bars -->
-    <!-- Login Bar -->
-    <nav class="logbar">
-      <ul>
-        <li><a href='/login' transition='Sign In' hidden>Sign In</a></li>
-        <li><a href='/logout' transition='Sign Out'>Sign Out</a></li>
-        <li><a href='/register' transition='Register'>Register</a></li>
-      </ul>
-    </nav>
-    <!-- Nav Bar -->
-    <nav class="navbar">
-      <ul>
-        <li><a href='/' transition='Home'>Home</a></li>
-        <li><a href='/about' transition='About'>About</a></li>
-        <li><a href='/profile' transition='Profile'>Profile</a></li>
-        <li><a href='/contact' transition='Contact'>Contact</a></li>
-      </ul>
-    </nav>
+  <!-- Navigation Bars -->
+  <!-- Login Bar -->
+  <nav class="logbar">
+    <ul>
+      <li><a href='/login' transition='Sign In'>Sign In</a></li>
+      <li><a href='/logout' transition='Sign Out'>Sign Out</a></li>
+      <li><a href='/register' transition='Register'>Register</a></li>
+    </ul>
+  </nav>
 
-    <div class="flex-container">
-      <h1>Profile Page</h1>
+  <!-- Nav Bar -->
+  <nav class="navbar">
+    <ul>
+      <li><a href='/' transition='Home'>Home</a></li>
+      <li><a href='/about' transition='About'>About</a></li>
+      <li><a href='/profile' transition='Profile'>Profile</a></li>
+      <li><a href='/contact' transition='Contact'>Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="flex-container">
+    <h1>Thank you for joining Guardian Link</h1>
+  </div>
+  <br>
+
+  <!-- Display User Details -->
+  <div class="flex-container">
+    <h2>Account Details</h2>
+  </div>
+
+  <div class="flex-container" id="user-details">
+
+    <div class="flex-item-left" id="user-info">
+      <label for="fname" class="labels">Forename:</label>
     </div>
-    <div class="flex-container">
-      <h3 id="msg">Thank you for signing up with GuardianLink</h3>
+    <div class="flex-item-right">
+      <input type="text" class="inputs" id="fname" name="fname"
+        placeholder="Volunteer use only..">
     </div>
 
-    <!-- Display User Details -->
-    <div class="flex-container" id="account">
-      <h2>Account Details:</h2>
+    <div class="flex-item-left">
+      <label for="sname" class="labels">Surname:</label>
+    </div>
+    <div class="flex-item-right">
+      <input type="text" class="inputs" id="sname" name="sname"
+        placeholder="Volunteer use only..">
     </div>
 
-    <div class="flex-container" id="user-details">
-      <div class="flex-item-left" id="user-info">
-        <label for="fname" class="labels">Forename:</label>
-      </div>
-      <div class="flex-item-right">
-        <input type="text" class="inputs" id="fname" name="fname"
-          placeholder="Volunteer use only..">
-      </div>
-
-      <div class="flex-item-left">
-        <label for="sname" class="labels">Surname:</label>
-      </div>
-      <div class="flex-item-right">
-        <input type="text" class="inputs" id="sname" name="sname"
-          placeholder="Volunteer use only..">
-      </div>
-
-      <div class="flex-item-left">
-        <label for="email" class="labels">Email:</label>
-      </div>
-      <div class="flex-item-right">
-        <input type="text" class="inputs" id="email" name="email">
-      </div>
-
-      <div class="flex-item-left">
-        <label for="hours" class="labels">Volunteer Hours Per Week:</label>
-      </div>
-      <div class="flex-item-right">
-        <input type="text" class="inputs" id="hours" placeholder="Volunteer use only..">
-      </div>
-
-      <div class="flex-item-left">
-        <label for="orgName" class="labels">Organization Name:</label>
-      </div>
-      <div class="flex-item-right">
-        <input type="text" class="inputs" id="orgName" name="orgName"
-          placeholder="Organization use only..">
-      </div>
-
-      <div class="flex-item-left">
-        <label for="info" class="labels">Organization Concerns:</label>
-      </div>
-      <div class="flex-item-right">
-        <textarea class="inputs" id="info" style="height:200px"
-          placeholder="Organization use only.." maxlength="2000"></textarea>
-      </div>
-
-      <div class="flex-item-left">
-        <label for="pass" class="labels">Password:</label>
-      </div>
-      <div class="flex-item-right">
-        <input type="password" class="inputs" id="pass" name="pass"
-            placeholder="Type new password.."
-            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
-            <p id="feedback"></p>
-      </div>
-
-      <div class="flex-item-left" id="tools"></div>
+    <div class="flex-item-left">
+      <label for="email" class="labels">Email:</label>
     </div>
+    <div class="flex-item-right">
+      <input type="text" class="inputs" id="email" name="email" autocomplete="off">
+    </div>
+
+    <div class="flex-item-left">
+      <label for="hours" class="labels">Volunteer Hours Per Week:</label>
+    </div>
+    <div class="flex-item-right">
+      <input type="text" class="inputs" id="hours" placeholder="Volunteer use only..">
+    </div>
+
+    <div class="flex-item-left">
+      <label for="orgName" class="labels">Organization Name:</label>
+    </div>
+    <div class="flex-item-right">
+      <input type="text" class="inputs" id="orgName" name="orgName"
+        placeholder="Organization use only..">
+    </div>
+
+    <div class="flex-item-left">
+      <label for="info" class="labels">Organization Concerns:</label>
+    </div>
+    <div class="flex-item-right">
+      <textarea class="inputs" id="info" placeholder="Organization use only.."
+        maxlength="2000"></textarea>
+    </div>
+
+    <div class="flex-item-left">
+      <label for="pass" class="labels">Password:</label>
+    </div>
+    <div class="flex-item-right">
+      <input type="password" class="inputs" id="pass" name="pass"
+          placeholder="Type new password.." pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+          title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+      <p id="feedback"></p>
+    </div>
+
+    <div class="flex-item-left" id="tools"></div>
+  </div>
 
     <div class="flex-container">
       <div class="flex-item-left" id="edit-container">
