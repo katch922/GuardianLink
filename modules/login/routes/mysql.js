@@ -157,7 +157,7 @@ api.post("/createBasicUser", async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(req.body.pass, 12);
 
-  db.getConnection(async (err, connection) => {
+  db.getConnection(async (err, conn) => {
     if (err) throw (err);
 
     const dbSearch =  // search DB
@@ -169,29 +169,29 @@ api.post("/createBasicUser", async (req, res) => {
       [0, firstName, lastName, email, hashedPassword, type, null, null, null, null,
       orgName]);
 
-    await connection.query (query, async (err, result) => {
+    await conn.query (query, async (err, result) => {
       if (err) throw (err);
 
       console.log(">>> Search Results");
       console.log(result.length);
 
       if (result.length !== 0) {
-        connection.release();
-        console.log(">>> Email already exists");
+        conn.release();
+        console.log(`>>> ${email} already exists`);
         res.status(409).send({ message: `${email} already exists` });
       }
       else {
-        await connection.query (insert, (err, result) => {
-          connection.release();
+        await conn.query (insert, (err, result) => {
+          conn.release();
 
           if (err) throw (err);
 
-          console.log(">>> Created new User");
+          console.log(`>>> Created new User ${email}`);
           console.log(result.insertId);
           res.status(201).send({ message: `${email} account created` });
         });
       }
-    }); // end of connection.query()
+    }); // end of conn.query()
   });   // end of db.getConnection()
 });     // end of /createBasicUser
 
@@ -316,7 +316,7 @@ api.post("/deleteUser", async (req, res) => {
 
       if (result.length === 0) {
         conn.release();
-        console.log(`>>>${email} No such account`);
+        console.log(`>>> ${email} No such account`);
         res.sendStatus(400);
       }
       else {
@@ -467,7 +467,7 @@ api.post("/editUser", async (req, res) => {
   
         if (result.length === 0) {
           conn.release();
-          console.log(`>>>${email} No such account`);
+          console.log(`>>> ${email} No such account`);
           res.sendStatus(400);
         }
         else {
@@ -693,7 +693,7 @@ api.post("/resetPass", async (req, res) => {
 
           const dbMsg =
             "UPDATE communication SET email_from=?, email_to=?, message=? WHERE email_from=?";
-          const saveMsg = mysql.format(dbMsg, [email, EMAIL, msg, email]);
+          const saveMsg = mysql.format(dbMsg, [email, ADMIN_EMAIL, msg, email]);
 
           // connect to DB and save message
           await conn.query(saveMsg, async (err, result) => {
@@ -765,13 +765,18 @@ api.post('/updateUser', async (req, res) => {
     orgName = null;
     info = null;
   }
+  else if (type === 'admin') {
+    hours = null;
+    orgName = null;
+    info = null;
+  }
 
   // only update pass if it was edited
   if (req.body.pass) {
     const hashedPass = await bcrypt.hash(req.body.pass, 12);
 
     db.getConnection(async (err, conn) => {
-      if (err) throw (err);
+      if (err) throw (err);xhr1
   
       const dbSearch =
         "SELECT forename, surname, password, concerns, available, org_name FROM users WHERE email = ?";
@@ -780,9 +785,6 @@ api.post('/updateUser', async (req, res) => {
         "UPDATE users SET forename=?, surname=?, password=?, concerns=?, available=?, org_name=? WHERE email=?";
       const update = mysql.format(dbUpdate, [firstName, lastName, hashedPass, info,
         hours, orgName, email]);
-
-      // IF NOTHING CHANGED; tell user and do not send make changes
-      
 
       await conn.query(query, async (err, result) => {
         if (err) throw (err);
@@ -793,7 +795,7 @@ api.post('/updateUser', async (req, res) => {
           res.sendStatus(400);
         }
         else {
-          await conn.query(update, (err, result) => {
+          await conn.query(update, (err) => {
             conn.release();
             if (err) throw (err);
   
@@ -833,7 +835,7 @@ api.post('/updateUser', async (req, res) => {
           res.sendStatus(400);
         }
         else {
-          await conn.query(update, (err, result) => {
+          await conn.query(update, (err) => {
             conn.release();
             if (err) throw (err);
 

@@ -12,6 +12,7 @@ updateUser.onclick = function () {
   const orgName = document.querySelector("#orgName").value;
   const info = document.querySelector("#info").value;
   const pass = document.querySelector("#pass").value;
+  const type = document.querySelector("#type").value;
 
   // validate names
   if (firstName.length > 0 || lastName.length > 0) {
@@ -39,13 +40,25 @@ updateUser.onclick = function () {
   }
 
   // validate hours
-  if (isNaN(hours)) {
+  if (type === 'vol' && (!hours)) {
     alert("Hours per week must be a number between 0 - 168");
 
     return false;
   }
   else if (hours > 168 || hours < 0) {
     alert("Hours per week must be between 0 - 168");
+
+    return false;
+  }
+  else if (isNaN(hours)) {
+    alert(`${hours} is not a valid number.`);
+
+    return false;
+  }
+
+  // validate Organization Name for org users
+  if (type === 'org' && (!orgName)) {
+    alert("Organization name cannot be empty.");
 
     return false;
   }

@@ -1,17 +1,18 @@
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Admin Tools</title>
-    <meta name="author" content="R.K.">
-    <meta charset="utf-8">
-    <!-- make mobile friendly -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+  <title>Admin Tools</title>
+  <meta name="author" content="R.K.">
+  <meta charset="utf-8">
+  <!-- make mobile friendly -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="/styles/admin.css">
-    <script defer src="/src/adminValidateForm.js"></script>
-    <script async src="/src/queryUsers.js"></script>
-    <script defer src="/src/adminAjax.js"></script>
-    <!-- Will populate user info page -->
-  </head>
+  <link rel="stylesheet" href="/styles/admin.css">
+  <script defer src="/src/adminValidateForm.js"></script>
+  <script async src="/src/queryUsers.js"></script>
+  <script defer src="/src/adminAjax.js"></script>
+  <!-- Will populate user info page -->
+</head>
 
 <body class="body">
 
@@ -39,6 +40,7 @@
   </div>
 
   <div class="outer">
+
     <!-- Create basic user -->
     <div class="flex-container">
       <h2>Create User</h2>
@@ -76,7 +78,7 @@
         <label for="email" class="labels">Email</label>
       </div>
       <div class="flex-item-right">
-        <input type="text" class="inputs" id="email" name="email" required>
+        <input type="text" class="inputs" id="email" name="email" autocomplete="on" required>
         <span class="error">*</span>
       </div>
     </div>
@@ -119,7 +121,9 @@
   </div>
 
   <div class="outer">
+
     <form action="/deleteUser" method="post">
+
       <!-- Edit user; Change pass & type -->
       <div class="flex-container">
         <h2>Edit User</h2>
@@ -137,7 +141,7 @@
       <div class="flex-container" id="del-container">
         <input type="submit" class="button" id="delBtn" value="DELETE">
         <p><span class="error" id="warn">Warning, this will delete the user!</span></p>
-        <p>Mouse over selection box will clear the page.</p>
+        <p>Mouse over selection box will clear the fields.</p>
       </div>
 
     </form>

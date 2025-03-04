@@ -1,6 +1,6 @@
 // Will allow admin to select user and info will populate
 // create objects
-const userList = document.getElementById("users");
+const userList = document.querySelector("#users");
 
 // create obj
 const xhr = new XMLHttpRequest();
@@ -9,9 +9,8 @@ const xhr = new XMLHttpRequest();
 let url = 'http://localhost:3000/admin';
 xhr.open("POST", url, true);
 xhr.send();
-//xhr.responseText = "json";
 xhr.onload = () => {
-  if (xhr.readyState == 4 && xhr.status == 200) {
+  if (xhr.readyState === 4 && xhr.status === 200) {
     // get reponse and parse it to a new var
     const jsonResponse = JSON.parse(xhr.response);
 
@@ -39,8 +38,8 @@ userList.onmousemove = function (req, res) {
 // When user selects a user, fetch user info
 userList.onclick = function(req, res) {
   const fetchUser = userList.value;
+
   xhr.open("POST", url, true);
-  //xhr.setRequestHeader('email', fetchUser);
   xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   xhr.send(JSON.stringify({'email': fetchUser}));
   xhr.onload = () => {

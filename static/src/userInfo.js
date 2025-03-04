@@ -7,6 +7,7 @@ const email = document.querySelector("#email");
 const button = document.createElement("button");
 const hours = document.querySelector("#hours");
 const orgInfo = document.querySelector("#info");
+const typeInput = document.querySelector('#type');
 
 // create obj
 const xhr = new XMLHttpRequest();
@@ -29,6 +30,7 @@ xhr.onreadystatechange = () => {
     email.value = jsonResponse.email;
     hours.value = jsonResponse.hours;
     orgInfo.value = jsonResponse.info;
+    typeInput.value = jsonResponse.type;
 
     // based on user type add a button
     if (type === "admin") {
