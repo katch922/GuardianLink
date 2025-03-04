@@ -1,20 +1,21 @@
 // create obj
-const xhr = new XMLHttpRequest();
 const submit = document.querySelector(".button");
 const err = document.querySelector("#error");
 
 submit.onclick = function(req, res) {
+  const xhr = new XMLHttpRequest();
   const email = document.querySelector("#email").value;
 
   console.log(email);
   // validate email
   if (!emailIsValid(email)) {
     alert(`${email} not a valid email`);
+
     return false;
   }
 
   // email is valid send data
-  const url = 'http://localhost:3000/resetPass';
+  const url = 'http://localhost:3000/passReset';
 
   xhr.open("POST", url, true);
   xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -29,6 +30,10 @@ submit.onclick = function(req, res) {
     }
     else if (xhr.readyState === 4 && xhr.status === 404) {
       // email does not exists
+      err.textContent = jsonResponse.message;
+    }
+    else if (xhr.readyState === 4 && xhr.status === 400) {
+      // reset already sent, do not send again
       err.textContent = jsonResponse.message;
     }
     else {

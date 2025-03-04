@@ -661,9 +661,9 @@ api.post("/profile", (req, res) => {
 // not a great way to setup password reset, not a very secure way.
 // real life would want to send a reset email link and let the user reset their password
 // while the email token is valid
-api.post("/resetPass", async (req, res) => {
+api.post("/passReset", async (req, res) => {
   const email = req.body.email.trim();
-  const msg = `Password reset for ${email}`;
+  const msg = `Reset password for ${email}`;
 
   // prep db call
   db.getConnection(async (err, conn) => {
@@ -678,28 +678,47 @@ api.post("/resetPass", async (req, res) => {
 
       if (result.length === 0) {
         conn.release();
-        console.log(`${email} does not exist`);
+        console.log(`>>> ${email} does not exist`);
         res.status(404).send({ message: `Something went wrong.` });
       }
       else {
-        conn.release();
-        console.log(`${email} password reset sent`)
-        res.status(200).send({ message: `Password reset sent to admin` });
+        // Search email resets already sent, if it has been sent already, we will not
+        // send dumplicate msg for admin user
+        const msgSearch =
+          "SELECT email_from, pass_reset FROM communication WHERE email_from = ? AND pass_reset = ?"
+        const msgQuery = mysql.format(msgSearch, [email, 'yes']);
 
-        // save message to DB, the admin will reset password
-        // prep mySQL connection
-        db.getConnection(async (err, conn) => {
+        await conn.query(msgQuery, async (err, result) => {
           if (err) throw (err);
 
-          const dbMsg =
-            "UPDATE communication SET email_from=?, email_to=?, message=? WHERE email_from=?";
-          const saveMsg = mysql.format(dbMsg, [email, ADMIN_EMAIL, msg, email]);
+          // reset has not been sent
+          if (result.length === 0) {
+            conn.release();
 
-          // connect to DB and save message
-          await conn.query(saveMsg, async (err, result) => {
+            // save message to DB, the admin will reset password
+            // prep mySQL connection
+            db.getConnection(async (err, conn) => {
+              if (err) throw (err);
 
-          }); // end of conn.query()
-        });   // end of db.getConnection()
+              const dbMsg =
+                "INSERT INTO communication(email_from, email_to, message, pass_reset) VALUES(?, ?, ?, ?)";
+              const saveMsg = mysql.format(dbMsg, [email, ADMIN_EMAIL, msg, 'yes']);
+
+              // connect to DB and save message
+              await conn.query(saveMsg, async (err, result) => {
+                conn.release();
+                console.log(`>>> ${email} password reset sent`)
+                res.status(200).send({ message: `Password reset sent to admin` });
+              });
+            }); // end of db.getConnection()
+          }
+          else {
+            conn.release();
+
+            console.log(`>>> ${email} reset already sent`);
+            res.status(400).send({ message: `Password reset already sent` });
+          }
+        });     // end of conn.query()
       }
     }); // end of conn.query()
   });   // end of db.getConnection()

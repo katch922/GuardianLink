@@ -11,6 +11,7 @@
   <script defer src="/src/adminValidateForm.js"></script>
   <script async src="/src/queryUsers.js"></script>
   <script defer src="/src/adminAjax.js"></script>
+  <script defer src="/src/adminMsg.js"></script>
   <!-- Will populate user info page -->
 </head>
 
@@ -246,6 +247,27 @@
       </div>
 
     </form>
+  </div>
+
+  <!-- Reset password messages -->
+  <div class="flex-container">
+    <h2>Password Reset</h2>
+  </div>
+
+  <div class="flex-container">
+    <table class="table" id="messages">
+
+      <tr>
+        <th>Email From</th>
+        <th>Message</th>
+        <th>Action</th>
+      </tr>
+
+    </table>
+  </div>
+
+  <div class="flex-container">
+    <span id="delMsgNotify"></span>
   </div>
 
 </body>

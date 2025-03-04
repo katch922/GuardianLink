@@ -42,6 +42,7 @@ app.get("/contact", routes);
 app.get("/login", routes);
 app.get("/logout", routes);
 app.get('/orgList', routes);
+app.get('/passReset', routes);
 app.get("/profile", routes);
 app.get("/register", routes);
 app.get('/volList', routes);
@@ -59,8 +60,8 @@ app.post("/editUser", dbRoutes);
 app.post('/fetchMsg', dbRoutes);
 app.post("/login", dbRoutes);
 app.post("/orgList", dbRoutes);
+app.post("/passReset", dbRoutes);
 app.post("/profile", dbRoutes);
-app.post('/resetPass', dbRoutes); // work in progress
 app.post('/sendMsg', dbRoutes);
 app.post('/updateUser', dbRoutes);
 app.post('/volList', dbRoutes);

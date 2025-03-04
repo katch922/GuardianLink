@@ -62,6 +62,11 @@ api.get("/orgList", function(req, res) {
   }
 });
 
+// Forgot Password page
+api.get("/passReset", function(req, res) {
+  res.sendFile(path.join(homeDir, '/html/pass-reset.html'));
+});
+
 // Profile Page
 api.get("/profile", function(req, res) {
   // if user logged in

@@ -245,3 +245,35 @@ End of Default Styling
     background: #F9627D;
     font-size: 1.5vh;
 }
+
+.table {
+    color: #002642;
+    font-size: 2.5vh;
+    padding: 25px;
+    width: 100%;
+    text-align: left;
+}
+th {
+    color: #918868;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+td {
+    background: #CDDDDD;
+    font-size: 2vh;
+    padding: 40px;
+    text-align: left;
+}
+
+button[name="delBtn"] {
+    font-size: 2vh;
+    background: #F9627D;
+    margin: 0;
+}
+button[name="delBtn"]:hover {
+    color: #fff8f0;
+    background: #F9627D80;
+}
+
+a {
+    text-decoration: none;
+}
