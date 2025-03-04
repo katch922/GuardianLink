@@ -32,7 +32,7 @@ app.use(express.urlencoded({extended: true}));  // parse data from POST for req.
 app.use(express.static(path.join(__dirname, '../../static')));
 
 // start express server
-app.listen(port, () => console.log(`>>> Server Started on port:${port}`));
+app.listen(port, () => console.log(`>>> Server Started on port: ${port}`));
 
 // ROUTES; Pages
 app.get("/", routes);
