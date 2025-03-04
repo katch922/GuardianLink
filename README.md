@@ -7,9 +7,8 @@
 **Author:** Katch 2025  
 
 #### List of changes  
-- 19 Jan 25: Katch - App created.  
+- 4 Mar 25: Katch - App added to GitHub.
 
-### Requirments
 ### Instructions are for Linux OS
 
 1. Install mysql database server; Start the service
