@@ -12,5 +12,5 @@
 ### Instructions are for Linux OS
 
 1. Install mysql database server; Start the service
-2. Setup mysql database for initial use
-   1. Test
+2. Setup mysql database before setting up the server
+   1. 
