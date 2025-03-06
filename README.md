@@ -47,9 +47,10 @@
    8. Change to login module folder: `cd GuardianLink/modules/login`
    9. Make sure you can use npm rootless (without sudo). Follow wiki based on your distro
    10. Install nodejs modules: `npm i`
-   11. ```sql
-      -- Create admin user for the project
-      INSERT INTO users(email, password, user_type)
-      VALUES('admin@guardianlink.com', '$2a$12$4GNHuiG0MxAmfL/AUztPxOmrzrP0usL1MQmFapMtaKobcFB5LVe5a', 'admin');
-      ```
+   11. 
+   ```sql
+   -- Create admin user for the project
+   INSERT INTO users(email, password, user_type)
+   VALUES('admin@guardianlink.com', '$2a$12$4GNHuiG0MxAmfL/AUztPxOmrzrP0usL1MQmFapMtaKobcFB5LVe5a', 'admin');
+   ```
    12. 
