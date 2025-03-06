@@ -230,12 +230,6 @@ End of Default Styling
 }
 
 
-#del-container {
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
 #warn {
     margin-left: 20px;
 }
@@ -276,4 +270,8 @@ button[name="delBtn"]:hover {
 
 a {
     text-decoration: none;
+}
+
+#clear {
+    font-size: 1vh;
 }

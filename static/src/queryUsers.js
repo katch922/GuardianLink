@@ -1,6 +1,7 @@
 // Will allow admin to select user and info will populate
 // create objects
 const userList = document.querySelector("#users");
+const clearScreen = document.querySelector("#clear");
 
 // create obj
 const xhr = new XMLHttpRequest();
@@ -27,14 +28,6 @@ xhr.onload = () => {
   }
 };
 
-// clear screen to display new user info
-let counter = 0;
-userList.onmousemove = function (req, res) {
-  if (counter > 0) {
-    location.reload(true);
-  }
-}
-
 // When user selects a user, fetch user info
 userList.onclick = function(req, res) {
   const fetchUser = userList.value;
@@ -42,7 +35,7 @@ userList.onclick = function(req, res) {
   xhr.open("POST", url, true);
   xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   xhr.send(JSON.stringify({'email': fetchUser}));
-  xhr.onload = () => {
+  xhr.onreadystatechange = () => {
     if (xhr.readyState == 4 && xhr.status == 200) {
       const jsonResponse = JSON.parse(xhr.response);
       const orgName = document.getElementById("editName");
@@ -55,10 +48,6 @@ userList.onclick = function(req, res) {
       const resume = document.getElementById("resume");
       const email = document.getElementById("hiddenEmail");
 
-      if (counter > 0) {
-        refreshData();
-      }
-
       // populate page
       orgName.value = jsonResponse[0].org_name;
       firstName.value = jsonResponse[0].forename;
@@ -69,11 +58,11 @@ userList.onclick = function(req, res) {
       crime.value = jsonResponse[0].background_check;
       resume.value = jsonResponse[0].resume;
       email.value = jsonResponse[0].email;
-
-      counter++;
-    }
-    else {
-      console.log(`"Error: ${xhr.status}`);
     }
   }
+}
+
+// clear data fields to select new user
+clearScreen.onclick = function (req, res) {
+  location.reload();
 }

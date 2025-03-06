@@ -11,7 +11,7 @@ const homeDir = path.normalize(path.resolve(__dirname, '../../../'));
 let dest = path.join(homeDir, "/static/uploads/");
 // Multer disk storage
 const storage = multer.diskStorage({
-  destination: function (cb) {
+  destination: function (req, file, cb) {
     cb(null, dest);
   },
   filename: function (req, file, cb) {
@@ -27,7 +27,7 @@ const upload = multer({
   storage: storage,
   dest: dest,
   limits: { filesize: maxSize },
-  fileFilter: function (file, cb) {
+  fileFilter: function (req, file, cb) {
     const filetypes = /pdf|doc|docx|odt/;
     const mimetype = filetypes.test(file.mimetype);
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
@@ -35,6 +35,8 @@ const upload = multer({
     if (mimetype && extname) {
       return cb(null, true);
     }
+
+    console.log(`${file} uploaded`);
 
     cb("Error: File upload only supports the following filetypes - " + filetypes);
   }
@@ -241,7 +243,7 @@ api.post("/createOrgUser", async (req, res) => {
 });     // end of /createOrgUser
 
 // CREATE VOL USERS
-api.post("/createVolUser", upload.single("resume"), async (req, res) => {
+api.post("/createVolUser", upload.single("resume"), async (req, res, next) => {
   // Cap first letter, rest lowercase
   const firstName = req.body.fname.trim().charAt(0).toUpperCase() +
     req.body.fname.slice(1).toLowerCase();
@@ -281,7 +283,7 @@ api.post("/createVolUser", upload.single("resume"), async (req, res) => {
         conn.release();
 
         console.log(">>> Email already exists");
-        res.status(409).send({ message: `${email} already registered, please login` });
+        res.status(409).send(`${email} already registered, please login`);
       }
       else {
         await conn.query (insert, (err, result) => {
