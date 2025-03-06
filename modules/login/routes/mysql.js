@@ -797,7 +797,7 @@ api.post('/updateUser', async (req, res) => {
     const hashedPass = await bcrypt.hash(req.body.pass, 12);
 
     db.getConnection(async (err, conn) => {
-      if (err) throw (err);xhr1
+      if (err) throw (err);
   
       const dbSearch =
         "SELECT forename, surname, password, concerns, available, org_name FROM users WHERE email = ?";
