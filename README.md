@@ -11,7 +11,7 @@
 
 ### Instructions are for Linux OS
 
-1. Install mysql database server; Start the server (service)
+1. Install mysql database server; Start the server (service). Make sure mysql uses `mysql_native_password` authentication method
 2. Setup mysql database before setting up the web server
    1. Login: `mysql -u root -p`
    2. Create DB: `CREATE DATABASE guardian_link;`
@@ -23,7 +23,7 @@
       FLUSH PRIVILEGES;
       ```
    4. Logout, log back in as admin: `mysql -u admin -p`
-   5. Select DB: `USE guardian_link;`
+   5. Select DB: `USE guardian_link`
    6. ```sql
       -- Create table 'users'
       CREATE TABLE users (
