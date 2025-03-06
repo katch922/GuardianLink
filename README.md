@@ -52,4 +52,5 @@
        INSERT INTO users(email, password, user_type)
        VALUES('admin@guardianlink.com', '$2a$12$4GNHuiG0MxAmfL/AUztPxOmrzrP0usL1MQmFapMtaKobcFB5LVe5a', 'admin');
        ```
-   12. 
+   12. Start web server: `npm run dev`
+   13. Open in browser: `localhost:3000`
