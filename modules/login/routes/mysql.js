@@ -122,7 +122,7 @@ api.post('/contact', async (req, res) => {
   db.getConnection(async (err, conn) => {
     if (err) throw (err);
 
-    // prep search query against mysql injection
+    // prep insert against mysql injection
     const preInsert =
       "INSERT INTO communication(email_from, email_to, message) VALUES(?, ?, ?)";
     const dbInsert = mysql.format(preInsert, [email, GEN_EMAIL, msg]);
@@ -152,8 +152,8 @@ api.post("/createBasicUser", async (req, res) => {
   const type = req.body.type;
   let orgName = null;
 
-  // no whitespace in org name
-  if (req.body.orgName.length > 0) {
+  // no whitespace in org name & if user is volunteer, leave it null
+  if (req.body.orgName.length > 0 && type === 'org') {
     orgName = req.body.orgName.trim();
   }
 
@@ -425,20 +425,31 @@ api.post("/delUser", async (req, res) => {
 // We would also be using session stores instead of memorystore
 api.post("/editUser", async (req, res) => {
   const email = req.body.hiddenEmail.trim();
-
-  // set to null if that item is empty
-  const orgName = req.body.editName.trim();
-  const firstName = req.body.editFname.trim().charAt(0).toUpperCase() +
-    req.body.editFname.slice(1).toLowerCase();
-  const lastName = req.body.editSname.trim().charAt(0).toUpperCase() +
-  req.body.editSname.slice(1).toLowerCase();
   const type = req.body.editType.trim();
-  const info = req.body.editInfo.trim();
-  const crime = req.body.crime.trim();
-  const resume = req.body.resume.trim();
+
+  // this vars can change later
+  let firstName = req.body.editFname.trim().charAt(0).toUpperCase() +
+    req.body.editFname.slice(1).toLowerCase();
+  let lastName = req.body.editSname.trim().charAt(0).toUpperCase() +
+    req.body.editSname.slice(1).toLowerCase();
+  let info = req.body.editInfo.trim();
+  let crime = req.body.crime.trim();
+  let resume = req.body.resume.trim();
   let hours = null;
+  let orgName = req.body.editName.trim();
   // force logout user if user type changed
   let logoutUser = false;
+
+  // set to null based on user type
+  if (type === 'vol') {
+    orgName = info = null;
+  }
+  else if (type === 'org') {
+    firstName = lastName = crime = resume = hours = null;
+  }
+  else if (type === 'admin') {
+    orgName = info = crime = resume = hours = null;
+  }
 
   // set to null, if not updated
   if (req.body.editHours) {

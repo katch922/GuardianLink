@@ -1,4 +1,3 @@
-// populate org list
 // make the connection
 const xhrMsg = new XMLHttpRequest();
 

@@ -23,15 +23,6 @@ updateUser.onclick = function () {
     }
   }
 
-  // validate pass
-  if (pass) {
-    if (!passIsValid(pass)) {
-      alert(`Bad password. Hover over for requirements.`);
-
-      return false;
-    }
-  }
-
   // validate email
   if (!emailIsValid(email)) {
     alert(`${email} not a valid email`);
@@ -61,6 +52,15 @@ updateUser.onclick = function () {
     alert("Organization name cannot be empty.");
 
     return false;
+  }
+
+  // validate pass
+  if (pass) {
+    if (!passIsValid(pass)) {
+      alert(`Bad password. Hover over for requirements.`);
+
+      return false;
+    }
   }
 
   // user validated; send data to server

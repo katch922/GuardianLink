@@ -39,6 +39,11 @@ xhr.onreadystatechange = () => {
       button.textContent = "Admin Tools";
       button.onclick = function() { window.location.href='/admin' };
       document.querySelector("#tools").appendChild(button);
+
+      // disable certain fields
+      hours.disabled = true;
+      orgName.disabled = true;
+      orgInfo.disabled = true;
     }
     else if (type === 'vol') {
       // use is volunteer, display link for Organization List
@@ -46,6 +51,10 @@ xhr.onreadystatechange = () => {
       button.textContent = 'ORG LIST';
       button.onclick = function() { window.location.href='/orgList' };
       document.querySelector("#tools").appendChild(button);
+
+      // disable certain input fields
+      orgName.disabled = true;
+      orgInfo.disabled = true;
     }
     else if (type === 'org') {
       // use is volunteer, display link for Organization List
@@ -53,6 +62,11 @@ xhr.onreadystatechange = () => {
       button.textContent = 'VOL LIST';
       button.onclick = function() { window.location.href='/volList' };
       document.querySelector("#tools").appendChild(button);
+
+      // disable volunteer input fields
+      firstName.disabled = true;
+      lastName.disabled = true;
+      hours.disabled = true;
     }
   }
 };
