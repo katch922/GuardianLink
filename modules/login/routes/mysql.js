@@ -243,14 +243,14 @@ api.post("/createOrgUser", async (req, res) => {
 });     // end of /createOrgUser
 
 // CREATE VOL USERS
+//api.post("/createVolUser", upload.single("resume"), async (req, res, next) => {
 api.post("/createVolUser", upload.single("resume"), async (req, res, next) => {
   // Cap first letter, rest lowercase
-  console.log(req.body);
-  const firstName = req.body.firstName.trim().charAt(0).toUpperCase() +
-    req.body.firstName.slice(1).toLowerCase();
-  const lastName = req.body.lastName.trim().charAt(0).toUpperCase() +
-    req.body.lastName.slice(1).toLowerCase();
-  const email = req.body.email;
+  const firstName = req.body.fname.trim().charAt(0).toUpperCase() +
+    req.body.fname.slice(1).toLowerCase();
+  const lastName = req.body.sname.trim().charAt(0).toUpperCase() +
+    req.body.sname.slice(1).toLowerCase();
+  const email = req.body.volEmail;
   const hours = req.body.hours;
   const crime = req.body.crime;
   const type = 'vol';
@@ -262,7 +262,7 @@ api.post("/createVolUser", upload.single("resume"), async (req, res, next) => {
   }
 
   // hash pass
-  const hashedPassword = await bcrypt.hash(req.body.pass, 12);
+  const hashedPassword = await bcrypt.hash(req.body.volPass1, 12);
 
   // prep connection
   db.getConnection(async (err, conn) => {
