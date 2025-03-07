@@ -197,7 +197,7 @@ api.post("/createBasicUser", async (req, res) => {
   });   // end of db.getConnection()
 });     // end of /createBasicUser
 
-// CREATE ORG USERS
+// // CREATE ORG USERS
 api.post("/createOrgUser", async (req, res) => {
   const orgName = req.body.orgName.trim();
   const email = req.body.orgEmail.trim();
@@ -245,11 +245,12 @@ api.post("/createOrgUser", async (req, res) => {
 // CREATE VOL USERS
 api.post("/createVolUser", upload.single("resume"), async (req, res, next) => {
   // Cap first letter, rest lowercase
-  const firstName = req.body.fname.trim().charAt(0).toUpperCase() +
-    req.body.fname.slice(1).toLowerCase();
-  const lastName = req.body.sname.trim().charAt(0).toUpperCase() +
-    req.body.sname.slice(1).toLowerCase();
-  const email = req.body.volEmail;
+  console.log(req.body);
+  const firstName = req.body.firstName.trim().charAt(0).toUpperCase() +
+    req.body.firstName.slice(1).toLowerCase();
+  const lastName = req.body.lastName.trim().charAt(0).toUpperCase() +
+    req.body.lastName.slice(1).toLowerCase();
+  const email = req.body.email;
   const hours = req.body.hours;
   const crime = req.body.crime;
   const type = 'vol';
@@ -261,7 +262,7 @@ api.post("/createVolUser", upload.single("resume"), async (req, res, next) => {
   }
 
   // hash pass
-  const hashedPassword = await bcrypt.hash(req.body.volPass1, 12);
+  const hashedPassword = await bcrypt.hash(req.body.pass, 12);
 
   // prep connection
   db.getConnection(async (err, conn) => {
@@ -283,7 +284,7 @@ api.post("/createVolUser", upload.single("resume"), async (req, res, next) => {
         conn.release();
 
         console.log(">>> Email already exists");
-        res.status(409).send(`${email} already registered, please login`);
+        res.status(409).send({ message: `${email} already registered, please login` });
       }
       else {
         await conn.query (insert, (err, result) => {
@@ -293,7 +294,7 @@ api.post("/createVolUser", upload.single("resume"), async (req, res, next) => {
 
           console.log(`>>> Created new User ${email}`);
           console.log(result.insertId);
-          res.status(201).redirect("/login");
+          res.status(201).send({ message: `${email} account created` });
         });
       }
     }); // end of conn.query()

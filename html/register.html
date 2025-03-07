@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="/styles/register.css">
   <script defer src="/src/validation.js"></script>
   <script defer src="/src/register.js"></script>
+  <script async src="/src/createVolUser.js"></script>
 </head>
 
 <body class="body">
@@ -128,7 +129,7 @@
       <h2>Volunteer Registration Form</h2>
     </div>
     
-    <form action="/createVolUser" method="post" enctype="multipart/form-data">
+    <!-- <form action="/createVolUser" method="post" enctype="multipart/form-data"> -->
 
       <div class="flex-container">
         <div class="flex-item-left">
@@ -180,8 +181,8 @@
           <p>Background Check</p>
         </div>
         <div class="flex-item-right">
-          <input type="radio" id="yes" name="crime" value="yes" required>Yes
-          <input type="radio" id="no" name="crime" value="no" checked>No
+          <input type="radio" id="crime" name="crime" value="yes" required>Yes
+          <input type="radio" id="crime" name="crime" value="no" checked>No
           <span class="error">*</span>
         </div>
       </div>
@@ -236,7 +237,7 @@
         </div>
       </div>
 
-    </form>
+    <!-- </form> -->
   </div>
 
 </body>
