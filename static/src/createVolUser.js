@@ -8,7 +8,7 @@ submit.onclick = async function() {
   const lastName = document.querySelector("#sname").value;
   const email = document.querySelector("#volEmail").value;
   const volHours = document.querySelector("#hours").value;
-  const crime = document.querySelectorAll("#crime").value;
+  const crime = document.querySelector('input[name="crime"]:checked').value;
   const pass1 = document.querySelector("#volPass1").value;
   const pass2 = document.querySelector("#volPass2").value;
   const file = document.querySelector("#resume");
