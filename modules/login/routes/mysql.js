@@ -244,7 +244,6 @@ api.post("/createOrgUser", async (req, res) => {
 
 // CREATE VOL USERS
 api.post("/createVolUser", upload.single("resume"), async (req, res, next) => {
-  console.log(req.body);
   // Cap first letter, rest lowercase
   const firstName = req.body.fname.trim().charAt(0).toUpperCase() +
     req.body.fname.slice(1).toLowerCase();
