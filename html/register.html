@@ -8,7 +8,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="/styles/register.css">
-  <script defer src="/src/validation.js"></script>
   <script defer src="/src/register.js"></script>
   <script defer src="/src/createVolUser.js"></script>
 </head>
@@ -129,7 +128,8 @@
       <h2>Volunteer Registration Form</h2>
     </div>
 
-    <form id="volForm">
+    <!-- will capture file in formData to be used by multer server side -->
+    <form id="file">
 
       <div class="flex-container">
         <div class="flex-item-left">
@@ -225,8 +225,13 @@
       </div>
 
       <div class="flex-container">
+        <span id="volNotify"></span>
+      </div>
+
+      <!-- use tag <button> instead of <submit> for page not to refresh -->
+      <div class="flex-container">
         <div class="flex-item-left">
-          <input type="submit" class="button" id="volSubmit" value="CREATE">
+          <button type="button" class="button" id="volSubmit">CREATE</button>
         </div>
         <div class="flex-item-right">
           <p><span class="error">* required fields</span></p>

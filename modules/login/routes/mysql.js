@@ -243,8 +243,8 @@ api.post("/createOrgUser", async (req, res) => {
 });     // end of /createOrgUser
 
 // CREATE VOL USERS
-//api.post("/createVolUser", upload.single("resume"), async (req, res, next) => {
 api.post("/createVolUser", upload.single("resume"), async (req, res, next) => {
+  console.log(req.body);
   // Cap first letter, rest lowercase
   const firstName = req.body.fname.trim().charAt(0).toUpperCase() +
     req.body.fname.slice(1).toLowerCase();
@@ -671,7 +671,6 @@ api.post("/profile", (req, res) => {
   }
 }); // end of /profile
 
-/***** WORK IN PROGRESS *****/
 // not a great way to setup password reset, not a very secure way.
 // real life would want to send a reset email link and let the user reset their password
 // while the email token is valid

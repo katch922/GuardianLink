@@ -1,13 +1,10 @@
-# GuardianLink Web Stack  app version 0.1
+# GuardianLink Web Stack app version 0.2
 
-## Instructions on how to setup the environment  
+## Instructions on how to setup the environment
 
-### This is a mock website for end of course project, it is not intended to be used in a live environment.  
+### This is a mock website for end of course project, it is not intended to be used in a live environment.
 
-**Author:** Katch 2025  
-
-#### List of changes  
-- 4 Mar 25: Katch - App added to GitHub.
+**Author:** Katch 2025
 
 ### Instructions are for Linux OS
 
