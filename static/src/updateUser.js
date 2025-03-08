@@ -54,6 +54,12 @@ updateUser.onclick = function () {
     return false;
   }
 
+  if (type === 'org' && (!info)) {
+    alert("Concerns field cannot be empty.");
+
+    return false;
+  }
+
   // validate pass
   if (pass) {
     if (!passIsValid(pass)) {
