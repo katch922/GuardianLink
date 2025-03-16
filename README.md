@@ -15,7 +15,7 @@
    3. ```sql
       -- Create mysql server user
       FLUSH PRIVILEGES;
-      CREATE USER 'admin'@'localhost' IDENTIFIED BY 'odZX4xHt';
+      CREATE USER 'admin'@'localhost' IDENTIFIED BY 'mysqlpass';
       GRANT ALL PRIVILEGES ON guardian_link.* TO 'admin'@'localhost';
       FLUSH PRIVILEGES;
       ```
@@ -49,9 +49,9 @@
       ```
    8. ```sql
       -- Create admin user for the web server
-      -- Password for admin user is AEB'9h!" can be changed (Bcrypt Generator with cost factor 12
+      -- Password for admin user is PASSWORD can be changed (Bcrypt Generator with cost factor 12
       INSERT INTO users(email, password, user_type)
-      VALUES('admin@guardianlink.com', '$2a$12$y7cXa9yrSAPEPCmTxYvV0.i44RsqMM.IQdr9ArjcwqpVRU9I7X.HC', 'admin');
+      VALUES('admin@guardianlink.com', 'PASSWORD_HASH_factor12', 'admin');
       ```
 3. Install nodejs (if compiling from source, it must include npm)
 4. Change to prefered folder & clone project: `git clone https://github.com/katch922/GuardianLink.git`
